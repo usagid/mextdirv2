@@ -108,19 +108,3 @@ For S3-compatible storage (S3, R2, MinIO, etc.), keep the API and `Image` schema
 ## Adding translations
 
 Add keys to all four JSON files in `locales/` (`ja.json`, `en.json`, `zh.json`, `ko.json`). Keep `㎡` in area labels and values so the unit stays consistent across locales. UI strings use `$t()`/`useI18n()`; listing content remains the source text entered by the lister.
-
-## Project layout
-
-```text
-app/
-  pages/                 # Home, listing grid, detail, about
-  components/            # Brutalist UI and gallery pieces
-  layouts/               # Header/footer shell
-  assets/css/            # Tailwind entry + base design tokens
-locales/                 # Four locale JSON files
-server/api/              # Nitro API endpoints
-server/utils/            # Prisma, validation, auth, local storage, demo repository
-prisma/                  # Schema, migration, and seed
-public/uploads/          # Local image storage and demo SVGs
-shared/types/            # API/domain types shared by app and server
-```
