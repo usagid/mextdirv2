@@ -1,0 +1,134 @@
+{
+  "site": {
+    "tagline": "Use it again."
+  },
+  "nav": {
+    "home": "Home",
+    "listings": "Find schools",
+    "about": "About mextdir"
+  },
+  "hero": {
+    "eyebrow": "Find the next owner of a school",
+    "title": "Sleeping schools,\nnew horizons.",
+    "description": "A directory for turning unused Japanese schools into open, useful places. Find the next way to use a building and its community.",
+    "searchLabel": "Search schools",
+    "prefecture": "Prefecture",
+    "city": "City",
+    "keyword": "Keyword",
+    "cityPlaceholder": "e.g. Nagano",
+    "keywordPlaceholder": "School, station, feature",
+    "search": "Search",
+    "browse": "Browse all schools"
+  },
+  "home": {
+    "featuredEyebrow": "Latest listings",
+    "featuredTitle": "Schools waiting for a new use",
+    "featuredLink": "View all",
+    "manifestoEyebrow": "mextdir / 01",
+    "manifestoTitle": "An empty school is\nnot an empty space.",
+    "manifestoText": "Classrooms, yards, corridors. They still hold local memory and room for what comes next. mextdir connects the people who own schools with the people who need a place."
+  },
+  "listings": {
+    "eyebrow": "Listings",
+    "title": "Find a school",
+    "subtitle": "Schools looking for a new owner or a new use",
+    "count": "{count} listings",
+    "sort": "Sort by",
+    "newest": "Newest",
+    "oldest": "Oldest",
+    "floorDesc": "Largest floor area",
+    "floorAsc": "Smallest floor area",
+    "loading": "Loading…",
+    "noResults": "No schools match those filters.",
+    "reset": "Clear filters",
+    "page": "Page {page} / {totalPages}",
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "filters": {
+    "title": "Filter",
+    "prefecture": "Prefecture",
+    "city": "City",
+    "facilityType": "Facility type",
+    "structure": "Structure",
+    "floorArea": "Floor area",
+    "floorAreaMin": "Min m²",
+    "floorAreaMax": "Max m²",
+    "keyword": "Keyword",
+    "any": "Any",
+    "apply": "Apply filters",
+    "clear": "Reset"
+  },
+  "card": {
+    "open": "Open listing",
+    "area": "{area} m² floor area",
+    "floors": "{count} floors",
+    "from": "Listed by",
+    "viewDetails": "View details"
+  },
+  "detail": {
+    "back": "Back to schools",
+    "overview": "Property overview",
+    "recruitment": "Recruitment",
+    "conditions": "Conditions",
+    "remarks": "Notes",
+    "contact": "Contact",
+    "contactCta": "Ask about this school",
+    "call": "Call",
+    "email": "Email",
+    "contactButton": "Contact",
+    "updated": "Updated",
+    "notFound": "School not found."
+  },
+  "fields": {
+    "prefecture": "Prefecture",
+    "city": "City",
+    "schoolName": "School name",
+    "address": "Address",
+    "closestPoi": "Closest point of interest",
+    "lister": "Listed by",
+    "phoneNumber": "Phone",
+    "additionalContact": "Additional contact",
+    "zoningInfo": "Zoning",
+    "landInfo": "Land information",
+    "structureInfo": "Structure",
+    "completionInfo": "Completion",
+    "facilityInfo": "Facility type",
+    "buildingArea": "Building area",
+    "floorArea": "Floor area",
+    "floorNum": "Floors",
+    "recruitment": "Recruitment",
+    "conditions": "Conditions",
+    "remarks": "Notes",
+    "createdAt": "Listed",
+    "updatedAt": "Updated"
+  },
+  "units": {
+    "floors": "floors"
+  },
+  "images": {
+    "gallery": "Image gallery",
+    "thumbnail": "Image {number}",
+    "fallback": "{name} image {number}",
+    "noImages": "No images"
+  },
+  "about": {
+    "eyebrow": "mextdir / 02",
+    "title": "Edit the future\nof schools together.",
+    "body": "mextdir is a place for connecting unused Japanese schools with new owners and new uses. Buy, lease, open. We are looking for people who can carry a building's time forward and make the next local landscape.",
+    "howTitle": "How it works",
+    "stepOne": "Search",
+    "stepOneText": "Find a school by region, area, or structure.",
+    "stepTwo": "Look",
+    "stepTwoText": "Review the photos and facts. Imagine what the place can become.",
+    "stepThree": "Talk",
+    "stepThreeText": "Contact the lister about terms and a possible site visit."
+  },
+  "footer": {
+    "note": "A directory for schools ready for a next chapter",
+    "copyright": "© {year} mextdir"
+  },
+  "accessibility": {
+    "skipToContent": "Skip to content"
+  }
+}

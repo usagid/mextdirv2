@@ -1,0 +1,38 @@
+{
+  "name": "mextdir",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.31.0",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "preview": "nuxt preview",
+    "prepare": "nuxt prepare && prisma generate",
+    "typecheck": "nuxt typecheck",
+    "db:migrate": "prisma migrate dev",
+    "db:deploy": "prisma migrate deploy",
+    "db:seed": "prisma db seed",
+    "db:studio": "prisma studio"
+  },
+  "dependencies": {
+    "@nuxt/image": "^2.1.0",
+    "@nuxtjs/i18n": "^10.0.0",
+    "@nuxtjs/tailwindcss": "^6.14.0",
+    "@prisma/client": "^6.17.1",
+    "h3": "1.15.11",
+    "nuxt": "^4.3.0",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.27",
+    "prisma": "^6.17.1",
+    "tailwindcss": "^3.4.17",
+    "tsx": "^4.20.3",
+    "typescript": "^5.9.3",
+    "vue-tsc": "^3.3.9"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  }
+}

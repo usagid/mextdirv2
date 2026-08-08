@@ -1,0 +1,10 @@
+node_modules
+.nuxt
+.output
+.env
+*.log
+.DS_Store
+public/uploads/*
+!public/uploads/.gitkeep
+!public/uploads/*.svg
+prisma/dev.db

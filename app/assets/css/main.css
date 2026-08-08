@@ -1,0 +1,137 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+	--paper: #f5f1e8;
+	--ink: #111111;
+	--accent: #f1df00;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+html {
+	background: var(--paper);
+	color: var(--ink);
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+	margin: 0;
+	min-width: 320px;
+	background: var(--paper);
+}
+
+::selection {
+	background: var(--ink);
+	color: var(--accent);
+}
+
+button,
+input,
+select,
+textarea {
+	font: inherit;
+}
+
+button,
+select,
+input[type="submit"] {
+	cursor: pointer;
+}
+
+:focus-visible {
+	outline: 3px solid var(--ink);
+	outline-offset: 3px;
+}
+
+@layer components {
+	.page-shell {
+		width: min(100% - 2rem, 1440px);
+		margin-inline: auto;
+	}
+
+	.brutal-panel {
+		border: 3px solid var(--ink);
+		box-shadow: 4px 4px 0 var(--ink);
+	}
+
+	.brutal-input {
+		width: 100%;
+		border: 3px solid var(--ink);
+		border-radius: 0;
+		background: var(--paper);
+		padding: 0.75rem 0.875rem;
+		color: var(--ink);
+	}
+
+	.brutal-input:focus {
+		outline: 0;
+		background: white;
+		box-shadow: 4px 4px 0 var(--ink);
+	}
+
+	.brutal-button {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		border: 3px solid var(--ink);
+		border-radius: 0;
+		background: var(--accent);
+		padding: 0.75rem 1.25rem;
+		font-family: "Arial Black", Arial, sans-serif;
+		font-weight: 900;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		box-shadow: 4px 4px 0 var(--ink);
+		transition:
+			transform 120ms ease,
+			box-shadow 120ms ease,
+			background 120ms ease;
+	}
+
+	.brutal-button:hover {
+		transform: translate(2px, 2px);
+		box-shadow: 2px 2px 0 var(--ink);
+		background: white;
+	}
+
+	.brutal-button:active {
+		transform: translate(4px, 4px);
+		box-shadow: none;
+	}
+
+	.eyebrow {
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.15em;
+		text-transform: uppercase;
+	}
+
+	.section-title {
+		font-family: "Arial Black", Arial, sans-serif;
+		font-size: clamp(2rem, 5vw, 4.5rem);
+		line-height: 0.95;
+		letter-spacing: -0.06em;
+		text-transform: uppercase;
+	}
+}
+
+@media (min-width: 768px) {
+	.page-shell {
+		width: min(100% - 4rem, 1440px);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		scroll-behavior: auto !important;
+		transition-duration: 0.01ms !important;
+		animation-duration: 0.01ms !important;
+	}
+}

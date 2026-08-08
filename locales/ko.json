@@ -1,0 +1,134 @@
+{
+  "site": {
+    "tagline": "다시 사용하기."
+  },
+  "nav": {
+    "home": "홈",
+    "listings": "학교 찾기",
+    "about": "mextdir 소개"
+  },
+  "hero": {
+    "eyebrow": "학교의 다음 주인을 찾습니다",
+    "title": "잠든 학교를,\n다음 풍경으로.",
+    "description": "사용되지 않는 일본의 학교를 열린 공간으로 바꾸기 위한 목록입니다. 건물과 지역의 새로운 사용법을 찾아보세요.",
+    "searchLabel": "학교 검색",
+    "prefecture": "도도부현",
+    "city": "시·구·정·촌",
+    "keyword": "키워드",
+    "cityPlaceholder": "예: 나가노시",
+    "keywordPlaceholder": "학교명·역·특징",
+    "search": "검색하기",
+    "browse": "모든 학교 보기"
+  },
+  "home": {
+    "featuredEyebrow": "최신 목록",
+    "featuredTitle": "새로운 용도를 기다리는 학교",
+    "featuredLink": "전체 보기",
+    "manifestoEyebrow": "mextdir / 01",
+    "manifestoTitle": "빈 학교는\n빈 공간이 아닙니다.",
+    "manifestoText": "교실, 운동장, 복도에는 지역의 기억과 다음을 위한 여백이 남아 있습니다. mextdir는 학교를 소유한 사람과 공간이 필요한 사람을 연결합니다."
+  },
+  "listings": {
+    "eyebrow": "목록",
+    "title": "학교 찾기",
+    "subtitle": "새로운 소유자 또는 용도를 기다리는 학교",
+    "count": "{count}건",
+    "sort": "정렬",
+    "newest": "최신순",
+    "oldest": "오래된 순",
+    "floorDesc": "연면적이 큰 순",
+    "floorAsc": "연면적이 작은 순",
+    "loading": "불러오는 중…",
+    "noResults": "조건에 맞는 학교를 찾지 못했습니다.",
+    "reset": "필터 지우기",
+    "page": "{page} / {totalPages} 페이지",
+    "previous": "이전",
+    "next": "다음"
+  },
+  "filters": {
+    "title": "필터",
+    "prefecture": "도도부현",
+    "city": "시·구·정·촌",
+    "facilityType": "시설 유형",
+    "structure": "구조",
+    "floorArea": "연면적",
+    "floorAreaMin": "최소 ㎡",
+    "floorAreaMax": "최대 ㎡",
+    "keyword": "키워드",
+    "any": "전체",
+    "apply": "필터 적용",
+    "clear": "초기화"
+  },
+  "card": {
+    "open": "모집 중",
+    "area": "연면적 {area}㎡",
+    "floors": "{count}층",
+    "from": "게시자",
+    "viewDetails": "상세 보기"
+  },
+  "detail": {
+    "back": "학교 목록으로 돌아가기",
+    "overview": "매물 개요",
+    "recruitment": "모집 내용",
+    "conditions": "모집 조건",
+    "remarks": "비고",
+    "contact": "문의",
+    "contactCta": "이 학교에 문의하기",
+    "call": "전화하기",
+    "email": "이메일 보내기",
+    "contactButton": "연락하기",
+    "updated": "업데이트",
+    "notFound": "학교를 찾을 수 없습니다."
+  },
+  "fields": {
+    "prefecture": "도도부현",
+    "city": "시·구·정·촌",
+    "schoolName": "학교명",
+    "address": "주소",
+    "closestPoi": "가까운 랜드마크",
+    "lister": "게시자",
+    "phoneNumber": "전화번호",
+    "additionalContact": "추가 연락처",
+    "zoningInfo": "용도 지역",
+    "landInfo": "토지 정보",
+    "structureInfo": "구조",
+    "completionInfo": "준공 정보",
+    "facilityInfo": "시설 유형",
+    "buildingArea": "건축 면적",
+    "floorArea": "연면적",
+    "floorNum": "층수",
+    "recruitment": "모집 내용",
+    "conditions": "조건",
+    "remarks": "비고",
+    "createdAt": "게시일",
+    "updatedAt": "업데이트"
+  },
+  "units": {
+    "floors": "층"
+  },
+  "images": {
+    "gallery": "이미지 갤러리",
+    "thumbnail": "이미지 {number}",
+    "fallback": "{name} 이미지 {number}",
+    "noImages": "이미지가 없습니다"
+  },
+  "about": {
+    "eyebrow": "mextdir / 02",
+    "title": "함께 편집하는\n학교의 미래.",
+    "body": "mextdir는 사용되지 않는 일본의 학교를 새로운 소유자와 용도로 연결하는 공간입니다. 구매, 임대, 개방. 건물의 시간을 이어받아 지역의 다음 풍경을 만들 사람을 찾습니다.",
+    "howTitle": "이용 방법",
+    "stepOne": "찾기",
+    "stepOneText": "지역, 면적, 구조로 학교를 찾습니다.",
+    "stepTwo": "살펴보기",
+    "stepTwoText": "사진과 개요를 확인하고 공간의 가능성을 상상합니다.",
+    "stepThree": "대화하기",
+    "stepThreeText": "게시자에게 연락해 조건과 현장 방문을 상담합니다."
+  },
+  "footer": {
+    "note": "새로운 장을 기다리는 학교를 위한 디렉터리",
+    "copyright": "© {year} mextdir"
+  },
+  "accessibility": {
+    "skipToContent": "본문으로 이동"
+  }
+}

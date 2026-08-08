@@ -1,0 +1,134 @@
+{
+  "site": {
+    "tagline": "再次使用。"
+  },
+  "nav": {
+    "home": "首页",
+    "listings": "寻找学校",
+    "about": "关于 mextdir"
+  },
+  "hero": {
+    "eyebrow": "寻找学校的新主人",
+    "title": "沉睡的学校，\n前往新的风景。",
+    "description": "将日本闲置学校变成开放而有用的场所。寻找建筑和社区的下一种使用方式。",
+    "searchLabel": "搜索学校",
+    "prefecture": "都道府县",
+    "city": "市区町村",
+    "keyword": "关键词",
+    "cityPlaceholder": "例如：长野市",
+    "keywordPlaceholder": "学校、车站、特点",
+    "search": "开始搜索",
+    "browse": "查看所有学校"
+  },
+  "home": {
+    "featuredEyebrow": "最新列表",
+    "featuredTitle": "等待新用途的学校",
+    "featuredLink": "查看全部",
+    "manifestoEyebrow": "mextdir / 01",
+    "manifestoTitle": "空置学校，\n并不是空白空间。",
+    "manifestoText": "教室、操场、走廊仍然保存着地方记忆，也拥有面向未来的余地。mextdir连接学校所有者与需要空间的人。"
+  },
+  "listings": {
+    "eyebrow": "学校列表",
+    "title": "寻找学校",
+    "subtitle": "等待新主人或新用途的学校",
+    "count": "{count} 个列表",
+    "sort": "排序",
+    "newest": "最新",
+    "oldest": "最早发布",
+    "floorDesc": "建筑面积从大到小",
+    "floorAsc": "建筑面积从小到大",
+    "loading": "加载中…",
+    "noResults": "没有符合条件的学校。",
+    "reset": "清除筛选",
+    "page": "第 {page} / {totalPages} 页",
+    "previous": "上一页",
+    "next": "下一页"
+  },
+  "filters": {
+    "title": "筛选",
+    "prefecture": "都道府县",
+    "city": "市区町村",
+    "facilityType": "设施类型",
+    "structure": "结构",
+    "floorArea": "建筑面积",
+    "floorAreaMin": "最小㎡",
+    "floorAreaMax": "最大㎡",
+    "keyword": "关键词",
+    "any": "全部",
+    "apply": "应用筛选",
+    "clear": "重置"
+  },
+  "card": {
+    "open": "正在招募",
+    "area": "建筑面积 {area}㎡",
+    "floors": "{count}层",
+    "from": "发布者",
+    "viewDetails": "查看详情"
+  },
+  "detail": {
+    "back": "返回学校列表",
+    "overview": "物业概要",
+    "recruitment": "招募内容",
+    "conditions": "招募条件",
+    "remarks": "备注",
+    "contact": "联系",
+    "contactCta": "咨询这所学校",
+    "call": "拨打电话",
+    "email": "发送邮件",
+    "contactButton": "联系",
+    "updated": "更新日期",
+    "notFound": "未找到学校。"
+  },
+  "fields": {
+    "prefecture": "都道府县",
+    "city": "市区町村",
+    "schoolName": "学校名称",
+    "address": "地址",
+    "closestPoi": "附近地标",
+    "lister": "发布者",
+    "phoneNumber": "电话",
+    "additionalContact": "其他联系方式",
+    "zoningInfo": "用途区域",
+    "landInfo": "土地信息",
+    "structureInfo": "结构",
+    "completionInfo": "竣工信息",
+    "facilityInfo": "设施类型",
+    "buildingArea": "建筑面积",
+    "floorArea": "总建筑面积",
+    "floorNum": "楼层数",
+    "recruitment": "招募内容",
+    "conditions": "条件",
+    "remarks": "备注",
+    "createdAt": "发布日期",
+    "updatedAt": "更新日期"
+  },
+  "units": {
+    "floors": "层"
+  },
+  "images": {
+    "gallery": "图片画廊",
+    "thumbnail": "图片 {number}",
+    "fallback": "{name}的图片 {number}",
+    "noImages": "暂无图片"
+  },
+  "about": {
+    "eyebrow": "mextdir / 02",
+    "title": "一起编辑\n学校的未来。",
+    "body": "mextdir致力于将日本闲置学校与新主人、新用途连接起来。购买、租赁、开放。我们寻找能够延续建筑时间，并创造地方新风景的人。",
+    "howTitle": "使用方式",
+    "stepOne": "寻找",
+    "stepOneText": "按地区、面积或结构找到学校。",
+    "stepTwo": "了解",
+    "stepTwoText": "查看照片与概要，想象空间的可能性。",
+    "stepThree": "沟通",
+    "stepThreeText": "联系发布者，咨询条件和现场参观。"
+  },
+  "footer": {
+    "note": "为准备开启下一篇章的学校而设的目录",
+    "copyright": "© {year} mextdir"
+  },
+  "accessibility": {
+    "skipToContent": "跳转到正文"
+  }
+}

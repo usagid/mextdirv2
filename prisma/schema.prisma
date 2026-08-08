@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model School {
+  id                String   @id @default(uuid())
+  prefecture        String
+  city              String
+  schoolName        String
+  address           String
+  closestPoi        String
+  lister            String
+  phoneNumber       String
+  additionalContact String
+  zoningInfo        String
+  landInfo          String
+  structureInfo     String
+  completionInfo    String
+  facilityInfo      String
+  buildingArea      Int
+  floorArea         Int
+  floorNum          Int
+  recruitment       String
+  conditions        String
+  remarks           String
+  images            Image[]
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@index([prefecture])
+  @@index([city])
+  @@index([floorArea])
+}
+
+model Image {
+  id        String   @id @default(uuid())
+  schoolId  String
+  school    School   @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  url       String
+  altText   String?
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@index([schoolId, sortOrder])
+}
