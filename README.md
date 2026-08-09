@@ -138,3 +138,8 @@ S3 mode requires `S3_ENDPOINT`, `S3_REGION`, `S3_BUCKET`, `S3_ACCESS_KEY_ID`, `S
 ## Adding translations
 
 Add keys to all four JSON files in `locales/` (`ja.json`, `en.json`, `zh.json`, `ko.json`). Keep `㎡` in area labels and values so the unit stays consistent across locales. UI strings use `$t()`/`useI18n()`; listing content remains the source text entered by the lister.
+
+<br>
+<br>
+
+<img src="./public/favicon.svg" height="64"> <a href="https://usagid.com/" target="_blank">usagid</a> project.
