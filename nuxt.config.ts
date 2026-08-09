@@ -51,10 +51,12 @@ export default defineNuxtConfig({
 	app: {
 		head: {
 			title: "mextdir — Abandoned school listings",
+			link: [{ rel: "icon", type: "image/svg+xml", href: "/favicon.svg" }],
 			meta: [
 				{
 					name: "description",
-					content: "Find new owners for abandoned Japanese schools.",
+					content:
+						"MEXT（文部科学省）「みんなの廃校」プロジェクトの廃校情報ライブラリー。全国の廃校・未活用の学校施設を地域から検索し、事業や地域活性化、施設活用など、あなたの目的やニーズに合った廃校を見つけましょう。",
 				},
 				{ name: "theme-color", content: "#f5f1e8" },
 			],

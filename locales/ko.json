@@ -77,8 +77,17 @@
     "call": "전화하기",
     "email": "이메일 보내기",
     "contactButton": "연락하기",
+    "copy": "복사",
+    "copied": "복사됨",
     "updated": "업데이트",
     "notFound": "학교를 찾을 수 없습니다."
+  },
+  "support": {
+    "title": "mextdir 후원하기",
+    "body": "mextdir는 독립적인 디렉터리입니다. 유용하게 느껴지셨다면 계속 운영될 수 있도록 응원해 주세요.",
+    "link": "mextdir 후원하기",
+    "continue": "연락처로 계속",
+    "close": "닫기"
   },
   "fields": {
     "prefecture": "도도부현",
@@ -126,6 +135,7 @@
   },
   "footer": {
     "note": "새로운 장을 기다리는 학교를 위한 디렉터리",
+    "disclaimer": "mextdir는 일본 문부과학성(MEXT)과 아무런 제휴 관계가 없습니다.",
     "copyright": "© {year} mextdir"
   },
   "accessibility": {

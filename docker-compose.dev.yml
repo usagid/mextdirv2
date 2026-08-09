@@ -76,7 +76,8 @@ services:
       S3_FORCE_PATH_STYLE: "true"
     ports:
       - "3001:3000"
-    command: ["sh", "-c", "pnpm db:deploy && pnpm dev --host 0.0.0.0"]
+    command:
+      ["sh", "-c", "pnpm db:deploy && pnpm prepare && pnpm dev --host 0.0.0.0"]
     volumes:
       - .:/app
       - mextdir-dev-node-modules:/app/node_modules

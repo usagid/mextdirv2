@@ -48,3 +48,65 @@ model Image {
 
   @@index([schoolId, sortOrder])
 }
+
+enum AdminRole {
+  ADMIN
+  EDITOR
+}
+
+model AdminUser {
+  id            String         @id @default(uuid())
+  username      String         @unique
+  passwordHash  String
+  role          AdminRole      @default(ADMIN)
+  active        Boolean        @default(true)
+  sessions      AdminSession[]
+  apiKeys       ApiKey[]
+  createdBlocks AccessBlock[]  @relation("BlockCreator")
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+model AdminSession {
+  id         String    @id @default(uuid())
+  tokenHash  String    @unique
+  userId     String
+  user       AdminUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt  DateTime
+  lastUsedAt DateTime  @default(now())
+  createdAt  DateTime  @default(now())
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model ApiKey {
+  id          String    @id @default(uuid())
+  name        String
+  prefix      String
+  keyHash     String    @unique
+  createdById String
+  createdBy   AdminUser @relation(fields: [createdById], references: [id], onDelete: Restrict)
+  lastUsedAt  DateTime?
+  expiresAt   DateTime?
+  revokedAt   DateTime?
+  createdAt   DateTime  @default(now())
+
+  @@index([createdById])
+  @@index([revokedAt])
+}
+
+model AccessBlock {
+  id               String    @id @default(uuid())
+  ipAddress        String?
+  userAgentContains String?
+  reason           String?
+  active           Boolean   @default(true)
+  createdById      String?
+  createdBy        AdminUser? @relation("BlockCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  @@index([ipAddress])
+  @@index([active])
+}

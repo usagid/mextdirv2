@@ -77,8 +77,17 @@
     "call": "Call",
     "email": "Email",
     "contactButton": "Contact",
+    "copy": "Copy",
+    "copied": "Copied",
     "updated": "Updated",
     "notFound": "School not found."
+  },
+  "support": {
+    "title": "Support mextdir",
+    "body": "mextdir is an independent directory. If it is useful to you, please consider supporting its continued work.",
+    "link": "Support mextdir",
+    "continue": "Continue to contact",
+    "close": "Close"
   },
   "fields": {
     "prefecture": "Prefecture",
@@ -126,6 +135,7 @@
   },
   "footer": {
     "note": "A directory for schools ready for a next chapter",
+    "disclaimer": "mextdir is not affiliated with MEXT (Ministry of Education, Culture, Sports, Science and Technology).",
     "copyright": "© {year} mextdir"
   },
   "accessibility": {

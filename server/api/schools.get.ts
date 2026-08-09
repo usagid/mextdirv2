@@ -3,6 +3,10 @@ import type { Prisma } from "@prisma/client";
 import type { SchoolFilters } from "../../shared/types/school";
 import { isDemoMode } from "../utils/db";
 import { listDemoSchools } from "../utils/demo-schools";
+import {
+	maskSchoolList,
+	shouldHideContactInformation,
+} from "../utils/access-blocks";
 import { listSchools } from "../utils/school-repository";
 import { queryInteger, queryString } from "../utils/school-validation";
 
@@ -38,8 +42,10 @@ export default defineEventHandler(async (event) => {
 		});
 	}
 
+	const hideContacts = await shouldHideContactInformation(event);
 	if (isDemoMode()) {
-		return listDemoSchools(filters);
+		const result = listDemoSchools(filters);
+		return hideContacts ? maskSchoolList(result) : result;
 	}
 
 	const where: Prisma.SchoolWhereInput = {
@@ -82,6 +88,7 @@ export default defineEventHandler(async (event) => {
 		orderBy,
 		((filters.page || 1) - 1) * pageSize,
 		pageSize,
+		{ hideContacts },
 	);
 
 	return {

@@ -19,9 +19,14 @@ type SchoolWithImages = Prisma.SchoolGetPayload<{
 	include: typeof schoolDetailInclude;
 }>;
 
-export function serializeSchool(school: SchoolWithImages): School {
+export function serializeSchool(
+	school: SchoolWithImages,
+	options: { hideContacts?: boolean } = {},
+): School {
 	return {
 		...school,
+		phoneNumber: options.hideContacts ? "" : school.phoneNumber,
+		additionalContact: options.hideContacts ? "" : school.additionalContact,
 		createdAt: school.createdAt.toISOString(),
 		updatedAt: school.updatedAt.toISOString(),
 		images: school.images.map((image) => ({
@@ -36,6 +41,7 @@ export async function listSchools(
 	orderBy: Prisma.SchoolOrderByWithRelationInput,
 	skip: number,
 	take: number,
+	options: { hideContacts?: boolean } = {},
 ) {
 	const [total, schools] = await Promise.all([
 		prisma.school.count({ where }),
@@ -51,7 +57,7 @@ export async function listSchools(
 	return {
 		total,
 		schools: schools.map((school) =>
-			serializeSchool(school as SchoolWithImages),
+			serializeSchool(school as SchoolWithImages, options),
 		),
 	};
 }

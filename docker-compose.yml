@@ -28,7 +28,7 @@ services:
       NODE_ENV: production
       DATABASE_URL: postgresql://postgres:postgres@postgres:5432/mextdir?schema=public
       DEMO_MODE: "false"
-      ADMIN_API_KEY: ${ADMIN_API_KEY:-dev-local-admin-key}
+      ADMIN_API_KEY: ${ADMIN_API_KEY:-}
       STORAGE_DRIVER: local
       UPLOAD_DIR: /app/.output/public/uploads
     ports:

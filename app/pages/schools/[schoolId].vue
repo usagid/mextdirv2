@@ -10,6 +10,10 @@ const { data: school, error } = await useFetch<School>(() => `/api/schools/${sch
   key: `school-${schoolId.value}`,
 })
 
+const supportUrl = 'https://mishashto.com/support'
+const supportModalOpen = ref(false)
+const copiedContact = ref<'phone' | 'additional' | null>(null)
+
 type ContactAction = {
   href: string
   label: string
@@ -27,8 +31,40 @@ function getContactAction(value: string | undefined): ContactAction | null {
   return phone ? { href: `tel:${phone}`, label: t('detail.call') } : null
 }
 
+function getCopyValue(value: string | undefined) {
+  const normalized = value?.trim()
+  const action = getContactAction(normalized)
+  if (!normalized || !action || action.external) return null
+  if (/^mailto:/i.test(normalized)) return normalized.replace(/^mailto:/i, '').split('?')[0]
+  return normalized
+}
+
 const phoneAction = computed(() => getContactAction(school.value?.phoneNumber))
 const additionalContactAction = computed(() => getContactAction(school.value?.additionalContact))
+const phoneCopyValue = computed(() => getCopyValue(school.value?.phoneNumber))
+const additionalContactCopyValue = computed(() => getCopyValue(school.value?.additionalContact))
+
+function setSupportModalOpen(open: boolean) {
+  supportModalOpen.value = open
+}
+
+async function copyContact(value: string, key: 'phone' | 'additional') {
+  try {
+    await navigator.clipboard.writeText(value)
+  } catch {
+    return
+  }
+  copiedContact.value = key
+  setSupportModalOpen(true)
+}
+
+function copyPhone() {
+  if (phoneCopyValue.value) copyContact(phoneCopyValue.value, 'phone')
+}
+
+function copyAdditionalContact() {
+  if (additionalContactCopyValue.value) copyContact(additionalContactCopyValue.value, 'additional')
+}
 
 useHead(() => ({
   title: school.value ? `${school.value.schoolName} — mextdir` : `mextdir — ${t('detail.notFound')}`,
@@ -66,31 +102,47 @@ useHead(() => ({
               <p class="eyebrow">{{ t('fields.lister') }}</p>
               <p class="mt-1 font-bold">{{ school.lister }}</p>
             </div>
-            <div v-if="school.phoneNumber" class="flex items-end justify-between gap-3">
+            <div v-if="school.phoneNumber && phoneAction" class="flex items-end justify-between gap-3">
               <div class="min-w-0">
                 <p class="eyebrow">{{ t('fields.phoneNumber') }}</p>
-                <a :href="`tel:${school.phoneNumber}`" class="mt-1 inline-block font-bold underline decoration-2 underline-offset-4 hover:bg-paper">{{ school.phoneNumber }}</a>
+                <a :href="phoneAction.href" class="mt-1 inline-block font-bold underline decoration-2 underline-offset-4 hover:bg-paper" @click="setSupportModalOpen(true)">{{ school.phoneNumber }}</a>
               </div>
-              <a
-                v-if="phoneAction"
-                :href="phoneAction.href"
-                class="brutal-button shrink-0 px-2 py-1 text-[10px] shadow-[2px_2px_0_#111]"
-                :target="phoneAction.external ? '_blank' : undefined"
-                :rel="phoneAction.external ? 'noreferrer' : undefined"
-              >{{ phoneAction.label }}</a>
+              <div class="flex shrink-0 flex-wrap justify-end gap-2">
+                <button
+                  v-if="phoneCopyValue"
+                  type="button"
+                  class="brutal-button px-2 py-1 text-[10px] shadow-[2px_2px_0_#111]"
+                  @click="copyPhone"
+                >{{ copiedContact === 'phone' ? t('detail.copied') : t('detail.copy') }}</button>
+                <a
+                  :href="phoneAction.href"
+                  class="brutal-button px-2 py-1 text-[10px] shadow-[2px_2px_0_#111]"
+                  :target="phoneAction.external ? '_blank' : undefined"
+                  :rel="phoneAction.external ? 'noreferrer' : undefined"
+                  @click="setSupportModalOpen(true)"
+                >{{ phoneAction.label }}</a>
+              </div>
             </div>
             <div v-if="school.additionalContact" class="flex items-end justify-between gap-3">
               <div class="min-w-0">
                 <p class="eyebrow">{{ t('fields.additionalContact') }}</p>
                 <p class="mt-1 break-words font-bold">{{ school.additionalContact }}</p>
               </div>
-              <a
-                v-if="additionalContactAction"
-                :href="additionalContactAction.href"
-                class="brutal-button shrink-0 px-2 py-1 text-[10px] shadow-[2px_2px_0_#111]"
-                :target="additionalContactAction.external ? '_blank' : undefined"
-                :rel="additionalContactAction.external ? 'noreferrer' : undefined"
-              >{{ additionalContactAction.label }}</a>
+              <div v-if="additionalContactAction" class="flex shrink-0 flex-wrap justify-end gap-2">
+                <button
+                  v-if="additionalContactCopyValue"
+                  type="button"
+                  class="brutal-button px-2 py-1 text-[10px] shadow-[2px_2px_0_#111]"
+                  @click="copyAdditionalContact"
+                >{{ copiedContact === 'additional' ? t('detail.copied') : t('detail.copy') }}</button>
+                <a
+                  :href="additionalContactAction.href"
+                  class="brutal-button px-2 py-1 text-[10px] shadow-[2px_2px_0_#111]"
+                  :target="additionalContactAction.external ? '_blank' : undefined"
+                  :rel="additionalContactAction.external ? 'noreferrer' : undefined"
+                  @click="setSupportModalOpen(true)"
+                >{{ additionalContactAction.label }}</a>
+              </div>
             </div>
           </div>
         </aside>
@@ -119,5 +171,18 @@ useHead(() => ({
         </article>
       </section>
     </template>
+
+    <Modal
+      :open="supportModalOpen"
+      :title="t('support.title')"
+      :close-label="t('support.close')"
+      @update:open="setSupportModalOpen"
+    >
+      <p>{{ t('support.body') }}</p>
+      <template #actions>
+        <a :href="supportUrl" class="brutal-button" target="_blank" rel="noreferrer">{{ t('support.link') }}</a>
+        <button type="button" class="brutal-button" @click="setSupportModalOpen(false)">{{ t('support.close') }}</button>
+      </template>
+    </Modal>
   </div>
 </template>

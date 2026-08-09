@@ -77,8 +77,17 @@
     "call": "電話する",
     "email": "メールする",
     "contactButton": "連絡する",
+    "copy": "コピー",
+    "copied": "コピーしました",
     "updated": "更新日",
     "notFound": "学校が見つかりません。"
+  },
+  "support": {
+    "title": "mextdirを応援する",
+    "body": "mextdirは独立したディレクトリです。役に立ったら、活動の継続を応援していただけるとうれしいです。",
+    "link": "mextdirを応援する",
+    "continue": "連絡先へ進む",
+    "close": "閉じる"
   },
   "fields": {
     "prefecture": "都道府県",
@@ -126,6 +135,7 @@
   },
   "footer": {
     "note": "使われなくなった学校のためのディレクトリ",
+    "disclaimer": "mextdirは文部科学省（MEXT）とは一切関係ありません。",
     "copyright": "© {year} mextdir"
   },
   "accessibility": {

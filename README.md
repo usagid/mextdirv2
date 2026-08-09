@@ -29,7 +29,7 @@ docker compose -f docker-compose.dev.yml up --build -d
 docker compose -f docker-compose.dev.yml exec mextdir pnpm db:seed
 ```
 
-The production Compose app is available at `http://localhost:3000/ja/`. The dev Compose app is available at `http://localhost:3001/ja/`; MinIO's S3 API is `http://localhost:9002` and its console is `http://localhost:9003` (`minioadmin` / `minioadmin`). Locale routes are `/ja/...`, `/en/...`, `/zh/...`, and `/ko/...`. Compose app containers apply migrations on startup; seed commands are intentionally manual so restarts do not overwrite listings.
+After PostgreSQL is migrated, open `/admin/setup` once to create the first administrator. The production Compose app is available at `http://localhost:3000/ja/`. The dev Compose app is available at `http://localhost:3001/ja/`; MinIO's S3 API is `http://localhost:9002` and its console is `http://localhost:9003` (`minioadmin` / `minioadmin`). Locale routes are `/ja/...`, `/en/...`, `/zh/...`, and `/ko/...`. Compose app containers apply migrations on startup; seed commands are intentionally manual so restarts do not overwrite listings.
 
 `DEMO_MODE=true` (or an absent `DATABASE_URL`) serves eight in-memory mock schools so the UI can be previewed without a database. Demo mode is read-only. Set `DEMO_MODE=false` to use PostgreSQL for API writes.
 
@@ -50,7 +50,9 @@ The production Compose app is available at `http://localhost:3000/ja/`. The dev 
 
 ```env
 DATABASE_URL="postgresql://postgres:postgres@localhost:5432/mextdir?schema=public"
+# Optional legacy API key; dashboard sessions and generated keys are preferred.
 ADMIN_API_KEY="a-long-random-server-only-key"
+TRUST_PROXY="false"
 DEMO_MODE="false"
 STORAGE_DRIVER="local"
 
@@ -64,7 +66,13 @@ S3_PUBLIC_URL="http://localhost:9002/mextdir"
 S3_FORCE_PATH_STYLE="true"
 ```
 
-`ADMIN_API_KEY` protects `POST /api/schools` and `POST /api/schools/:schoolId/images`. It is accepted as `Authorization: Bearer ...` or `x-admin-key: ...` and is never exposed through public runtime config.
+## Admin
+
+Use `/admin/setup` for the one-time first-admin setup, then `/admin` to log in. Passwords are stored as salted scrypt hashes. The first administrator can create additional administrators or editors, correct and add schools, create/revoke API keys, and manage contact-visibility blocks. Generated API keys are shown only once and are accepted as `Authorization: Bearer ...`, `x-api-key: ...`, or `x-admin-key: ...`.
+
+A block matches an exact IP address, a case-insensitive user-agent substring, or both when both fields are set. Blocked public requests still receive listings, but phone and additional-contact fields are blank. Set `TRUST_PROXY=true` only when a trusted reverse proxy controls `X-Forwarded-For`.
+
+The optional `ADMIN_API_KEY` remains a server-only legacy key for `POST /api/schools` and `POST /api/schools/:schoolId/images`; it is never exposed through public runtime config.
 
 ## API
 

@@ -77,8 +77,17 @@
     "call": "拨打电话",
     "email": "发送邮件",
     "contactButton": "联系",
+    "copy": "复制",
+    "copied": "已复制",
     "updated": "更新日期",
     "notFound": "未找到学校。"
+  },
+  "support": {
+    "title": "支持 mextdir",
+    "body": "mextdir是一个独立的目录。如果它对你有帮助，欢迎支持它继续运营。",
+    "link": "支持 mextdir",
+    "continue": "继续联系",
+    "close": "关闭"
   },
   "fields": {
     "prefecture": "都道府县",
@@ -126,6 +135,7 @@
   },
   "footer": {
     "note": "为准备开启下一篇章的学校而设的目录",
+    "disclaimer": "mextdir与日本文部科学省（MEXT）没有隶属关系。",
     "copyright": "© {year} mextdir"
   },
   "accessibility": {

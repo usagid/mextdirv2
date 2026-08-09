@@ -2,6 +2,10 @@ import { createError, defineEventHandler, getRouterParam } from "h3";
 import { isDemoMode, prisma } from "../../utils/db";
 import { findDemoSchool } from "../../utils/demo-schools";
 import {
+	maskSchoolContacts,
+	shouldHideContactInformation,
+} from "../../utils/access-blocks";
+import {
 	schoolDetailInclude,
 	serializeSchool,
 } from "../../utils/school-repository";
@@ -16,11 +20,12 @@ export default defineEventHandler(async (event) => {
 		});
 	}
 
+	const hideContacts = await shouldHideContactInformation(event);
 	if (isDemoMode()) {
 		const school = findDemoSchool(schoolId);
 		if (!school)
 			throw createError({ statusCode: 404, statusMessage: "School not found" });
-		return school;
+		return hideContacts ? maskSchoolContacts(school) : school;
 	}
 
 	const school = await prisma.school.findUnique({
@@ -32,5 +37,5 @@ export default defineEventHandler(async (event) => {
 		throw createError({ statusCode: 404, statusMessage: "School not found" });
 	}
 
-	return serializeSchool(school);
+	return serializeSchool(school, { hideContacts });
 });
