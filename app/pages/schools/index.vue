@@ -13,9 +13,10 @@ function valueOf(value: unknown) {
 }
 
 function filtersFromRoute(): SchoolFilterModel {
+  const prefecture = valueOf(route.query.prefecture)
   return {
-    prefecture: valueOf(route.query.prefecture),
-    city: valueOf(route.query.city),
+    prefecture,
+    city: prefecture ? valueOf(route.query.city) : '',
     keyword: valueOf(route.query.keyword),
     facilityType: valueOf(route.query.facilityType),
     structure: valueOf(route.query.structure),

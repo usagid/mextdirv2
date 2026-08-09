@@ -73,6 +73,7 @@ S3_FORCE_PATH_STYLE="true"
 - `POST /api/schools` — admin; JSON body follows `prisma/schema.prisma`
 - `POST /api/schools/:schoolId/images` — admin; multipart fields `file`/`files`, optional `altText`, or JSON `{ "url": "/uploads/example.jpg" }`
 - `GET /api/prefectures`
+- `GET /api/cities?prefecture=長野県`
 
 Example listing creation:
 

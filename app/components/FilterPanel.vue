@@ -38,9 +38,24 @@ const structureOptions = computed<VirtualSelectOption[]>(() => [
   { value: '木造', label: '木造' },
   { value: '鉄筋コンクリート造', label: '鉄筋コンクリート造' },
 ])
+const selectedPrefecture = computed({
+  get: () => local.prefecture,
+  set: (value: string) => {
+    if (value !== local.prefecture) local.city = ''
+    local.prefecture = value
+  },
+})
+const { data: cities } = await useFetch<string[]>('/api/cities', {
+  query: computed(() => ({ prefecture: local.prefecture || undefined })),
+  default: () => [],
+})
+const cityOptions = computed<VirtualSelectOption[]>(() => [
+  { value: '', label: t('filters.any') },
+  ...(cities.value || []).map(city => ({ value: city, label: city })),
+])
 
 watch(() => props.modelValue, (value) => {
-  Object.assign(local, value)
+  Object.assign(local, { ...value, city: value.prefecture ? value.city : '' })
 }, { deep: true })
 
 function update() {
@@ -71,13 +86,13 @@ function reset() {
     <form class="grid gap-4" @submit.prevent="submit">
       <div class="grid gap-1.5">
         <span class="eyebrow">{{ t('filters.prefecture') }}</span>
-        <VirtualSelect v-model="local.prefecture" :options="prefectureOptions" :placeholder="t('filters.any')" :aria-label="t('filters.prefecture')" />
+        <VirtualSelect v-model="selectedPrefecture" :options="prefectureOptions" :placeholder="t('filters.any')" :aria-label="t('filters.prefecture')" />
       </div>
 
-      <label class="grid gap-1.5">
+      <div v-if="local.prefecture" class="grid gap-1.5">
         <span class="eyebrow">{{ t('filters.city') }}</span>
-        <input v-model="local.city" class="brutal-input" type="search" :placeholder="t('hero.cityPlaceholder')">
-      </label>
+        <VirtualSelect v-model="local.city" :options="cityOptions" :placeholder="t('filters.any')" :aria-label="t('filters.city')" />
+      </div>
 
       <label class="grid gap-1.5">
         <span class="eyebrow">{{ t('filters.keyword') }}</span>

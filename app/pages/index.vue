@@ -22,6 +22,21 @@ const prefectureOptions = computed(() => [
     count: prefecture.count,
   })),
 ])
+const selectedPrefecture = computed({
+  get: () => search.prefecture,
+  set: (value: string) => {
+    if (value !== search.prefecture) search.city = ''
+    search.prefecture = value
+  },
+})
+const { data: cities } = await useFetch<string[]>('/api/cities', {
+  query: computed(() => ({ prefecture: search.prefecture || undefined })),
+  default: () => [],
+})
+const cityOptions = computed(() => [
+  { value: '', label: t('filters.any') },
+  ...(cities.value || []).map(city => ({ value: city, label: city })),
+])
 const latestSchools = computed(() => featured.value?.items.slice(0, 6) || [])
 
 function searchListings() {
@@ -52,12 +67,12 @@ useHead(() => ({ title: `mextdir — ${t('hero.eyebrow')}` }))
           <div class="grid gap-4">
             <div class="grid gap-1.5">
               <span class="eyebrow">{{ t('hero.prefecture') }}</span>
-              <VirtualSelect v-model="search.prefecture" :options="prefectureOptions" :placeholder="t('filters.any')" :aria-label="t('hero.prefecture')" />
+              <VirtualSelect v-model="selectedPrefecture" :options="prefectureOptions" :placeholder="t('filters.any')" :aria-label="t('hero.prefecture')" />
             </div>
-            <label class="grid gap-1.5">
+            <div v-if="search.prefecture" class="grid gap-1.5">
               <span class="eyebrow">{{ t('hero.city') }}</span>
-              <input v-model="search.city" class="brutal-input" type="search" :placeholder="t('hero.cityPlaceholder')">
-            </label>
+              <VirtualSelect v-model="search.city" :options="cityOptions" :placeholder="t('filters.any')" :aria-label="t('hero.city')" />
+            </div>
             <label class="grid gap-1.5">
               <span class="eyebrow">{{ t('hero.keyword') }}</span>
               <input v-model="search.keyword" class="brutal-input" type="search" :placeholder="t('hero.keywordPlaceholder')">
