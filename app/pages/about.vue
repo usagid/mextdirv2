@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const { t } = useI18n()
 const localePath = useLocalePath()
+const { track } = useUmami()
 
 useHead(() => ({ title: `mextdir — ${t('nav.about')}` }))
 </script>
@@ -44,7 +45,7 @@ useHead(() => ({ title: `mextdir — ${t('nav.about')}` }))
     <section class="border-y-[3px] border-ink bg-ink py-12 text-paper sm:py-16">
       <div class="page-shell flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
         <p class="max-w-xl font-display text-3xl leading-none tracking-[-0.06em] sm:text-5xl">{{ t('hero.browse') }}</p>
-        <NuxtLink :to="localePath('/schools')" class="brutal-button text-ink" data-umami-event="browse-listings" data-umami-event-source="about-cta">{{ t('nav.listings') }} <span aria-hidden="true" class="ml-3">→</span></NuxtLink>
+        <NuxtLink :to="localePath('/schools')" class="brutal-button text-ink" @click="track('browse-listings', { source: 'about-cta' })">{{ t('nav.listings') }} <span aria-hidden="true" class="ml-3">→</span></NuxtLink>
       </div>
     </section>
   </div>

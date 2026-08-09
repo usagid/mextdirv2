@@ -21,6 +21,8 @@ export default defineNuxtConfig({
 		storageDriver: process.env.STORAGE_DRIVER || "local",
 		public: {
 			appName: "mextdir",
+			umamiUrl: process.env.UMAMI_URL || "",
+			umamiWebsiteId: process.env.UMAMI_WEBSITE_ID || "",
 		},
 	},
 

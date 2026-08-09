@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const { locale } = useI18n()
 const switchLocalePath = useSwitchLocalePath()
+const { track } = useUmami()
 
 const languages = [
   { code: 'ja', label: '日本語' },
@@ -19,8 +20,7 @@ const languages = [
         class="px-1 py-0.5 underline-offset-4 hover:bg-accent hover:no-underline"
         :class="locale === language.code ? 'bg-ink text-paper no-underline' : ''"
         :aria-current="locale === language.code ? 'page' : undefined"
-        data-umami-event="change-language"
-        :data-umami-event-language="language.code"
+        @click="track('change-language', { language: language.code })"
       >
         {{ language.label }}
       </NuxtLink>

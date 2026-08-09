@@ -62,6 +62,8 @@ After PostgreSQL is migrated, open `/admin/setup` once to create the first admin
 DATABASE_URL="postgresql://postgres:postgres@localhost:5432/mextdir?schema=public"
 # Optional legacy API key; dashboard sessions and generated keys are preferred.
 ADMIN_API_KEY="a-long-random-server-only-key"
+UMAMI_URL="https://a.uwu.so"
+UMAMI_WEBSITE_ID="8ff1d5ce-d5c1-4afd-8787-7ce7244e5d33"
 TRUST_PROXY="false"
 DEMO_MODE="false"
 # Direct `pnpm dev` uses local files. Both Compose stacks override this to MinIO S3.

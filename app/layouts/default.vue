@@ -1,17 +1,23 @@
 <script setup lang="ts">
+const config = useRuntimeConfig()
+const umamiUrl = String(config.public.umamiUrl || '').replace(/\/+$/, '')
+const umamiWebsiteId = String(config.public.umamiWebsiteId || '')
+
 useHead({
-  script: [
-    {
-      defer: true,
-      src: 'https://a.uwu.so/script.js',
-      'data-website-id': '8ff1d5ce-d5c1-4afd-8787-7ce7244e5d33',
-    },
-    {
-      defer: true,
-      src: 'https://a.uwu.so/recorder.js',
-      'data-website-id': '8ff1d5ce-d5c1-4afd-8787-7ce7244e5d33',
-    },
-  ],
+  script: umamiUrl && umamiWebsiteId
+    ? [
+        {
+          defer: true,
+          src: `${umamiUrl}/script.js`,
+          'data-website-id': umamiWebsiteId,
+        },
+        {
+          defer: true,
+          src: `${umamiUrl}/recorder.js`,
+          'data-website-id': umamiWebsiteId,
+        },
+      ]
+    : [],
 })
 </script>
 

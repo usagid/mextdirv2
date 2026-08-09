@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const { t } = useI18n()
 const localePath = useLocalePath()
+const { track } = useUmami()
 const isMenuOpen = ref(false)
 
 const links = computed(() => [
@@ -17,7 +18,7 @@ function closeMenu() {
 <template>
   <header class="border-b-[3px] border-ink bg-paper">
     <div class="page-shell flex min-h-[76px] items-center justify-between gap-6">
-      <NuxtLink :to="localePath('/')" class="group flex items-center gap-3" @click="closeMenu">
+      <NuxtLink :to="localePath('/')" class="group flex items-center gap-3" @click="closeMenu(); track('navigate-home')">
         <span class="border-[3px] border-ink bg-accent px-2 py-1 font-display text-2xl leading-none tracking-[-0.08em] shadow-[3px_3px_0_#111] transition-transform group-hover:translate-x-0.5 group-hover:translate-y-0.5 group-hover:shadow-none">mextdir</span>
         <span class="hidden font-mono text-[10px] font-bold uppercase tracking-[0.14em] sm:inline">{{ $t('site.tagline') }}</span>
       </NuxtLink>
@@ -29,7 +30,7 @@ function closeMenu() {
           :to="link.to"
           class="font-mono text-xs font-bold uppercase tracking-[0.12em] underline-offset-4 hover:bg-accent hover:underline"
           active-class="bg-accent"
-          :data-umami-event="link.event"
+          @click="track(link.event)"
         >
           {{ link.label }}
         </NuxtLink>
@@ -55,8 +56,7 @@ function closeMenu() {
           :key="link.to"
           :to="link.to"
           class="border-b-2 border-ink py-3 font-mono text-sm font-bold uppercase tracking-[0.12em] last:border-b-0"
-          :data-umami-event="link.event"
-          @click="closeMenu"
+          @click="closeMenu(); track(link.event)"
         >
           {{ link.label }}
         </NuxtLink>
