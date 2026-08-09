@@ -30,6 +30,8 @@ MAX_PAGES = 30
 MAX_CHUNK_BYTES = 48 * 1024 * 1024
 DEFAULT_INTERVAL_SECONDS = 24 * 60 * 60
 DEFAULT_OCR_MODEL = "mistral-ocr-4-0"
+DEFAULT_OCR_TIMEOUT_MS = 300_000
+OCR_ATTEMPTS = 3
 USER_AGENT = "mextdir-importer/1.0 (+https://mextdir.example)"
 LOGGER = logging.getLogger("mextdir-importer")
 
@@ -67,8 +69,8 @@ ExtractedImage = tuple[str, bytes, str]
 ANNOTATION_FORMAT = response_format_from_pydantic_model(OCRSchoolList)
 ANNOTATION_PROMPT = """
 このPDFページ範囲から、掲載されている廃校施設をすべて抽出してください。
-学校施設1件につきschoolsの要素を1件だけ返してください。表の内容を組み合わせてください。
-日本語の文字列は原文を保ち、推測や補完はしないでください。値がない文字列は空文字列、
+学校施設1件につきschoolsの要素を1件だけ返してください。OCRが返すMarkdownの表と本文を一次情報として使い、表の内容を組み合わせてください。
+写真の内容から学校情報を推測せず、日本語の文字列は原文を保ち、推測や補完はしないでください。値がない文字列は空文字列、
 値がない数値は0にしてください。建築面積、延床面積、階数は整数で返してください。
 各学校のpage_indexには、このOCRチャンク内での1始まりのPDFページ番号を入れてください。
 JSONだけを返し、説明文やMarkdownは含めないでください。
@@ -297,17 +299,30 @@ def process_pdf_chunk(
     client: Mistral, pdf_bytes: bytes
 ) -> list[tuple[OCRSchool, list[ExtractedImage]]]:
     encoded = base64.b64encode(pdf_bytes).decode("ascii")
-    response = client.ocr.process(
-        model=os.getenv("MISTRAL_OCR_MODEL", DEFAULT_OCR_MODEL),
-        document={
-            "type": "document_url",
-            "document_url": f"data:application/pdf;base64,{encoded}",
-        },
-        document_annotation_format=ANNOTATION_FORMAT,
-        document_annotation_prompt=ANNOTATION_PROMPT,
-        include_image_base64=True,
-        include_blocks=True,
-    )
+    response = None
+    for attempt in range(1, OCR_ATTEMPTS + 1):
+        try:
+            response = client.ocr.process(
+                model=os.getenv("MISTRAL_OCR_MODEL", DEFAULT_OCR_MODEL),
+                document={
+                    "type": "document_url",
+                    "document_url": f"data:application/pdf;base64,{encoded}",
+                },
+                document_annotation_format=ANNOTATION_FORMAT,
+                document_annotation_prompt=ANNOTATION_PROMPT,
+                include_image_base64=True,
+                include_blocks=True,
+                timeout_ms=env_integer("MISTRAL_OCR_TIMEOUT_MS", DEFAULT_OCR_TIMEOUT_MS),
+            )
+            break
+        except Exception:
+            if attempt == OCR_ATTEMPTS:
+                raise
+            delay = attempt * 10
+            LOGGER.warning("Mistral OCR attempt %d/%d failed; retrying in %ds", attempt, OCR_ATTEMPTS, delay)
+            time.sleep(delay)
+    if response is None:
+        raise RuntimeError("Mistral OCR returned no response")
     schools = schools_from_annotation(annotation_from_response(response))
     pages = list(response.pages)
     images_by_page = [
