@@ -142,4 +142,4 @@ Add keys to all four JSON files in `locales/` (`ja.json`, `en.json`, `zh.json`, 
 <br>
 <br>
 
-<img src="./public/favicon.svg" height="64"> <a href="https://usagid.com/" target="_blank">usagid</a> project.
+<img src="./public/favicon.svg" height="32"> <a href="https://usagid.com/" target="_blank">usagid</a> project.
