@@ -23,16 +23,22 @@ export function serializeSchool(
 	school: SchoolWithImages,
 	options: { hideContacts?: boolean } = {},
 ): School {
+	const publicSchool = { ...school };
+	delete (publicSchool as Record<string, unknown>).sourceKey;
 	return {
-		...school,
+		...publicSchool,
 		phoneNumber: options.hideContacts ? "" : school.phoneNumber,
 		additionalContact: options.hideContacts ? "" : school.additionalContact,
 		createdAt: school.createdAt.toISOString(),
 		updatedAt: school.updatedAt.toISOString(),
-		images: school.images.map((image) => ({
-			...image,
-			createdAt: image.createdAt.toISOString(),
-		})),
+		images: school.images.map((image) => {
+			const publicImage = { ...image };
+			delete (publicImage as Record<string, unknown>).sourceKey;
+			return {
+				...publicImage,
+				createdAt: image.createdAt.toISOString(),
+			};
+		}),
 	};
 }
 

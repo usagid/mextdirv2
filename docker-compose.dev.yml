@@ -74,6 +74,7 @@ services:
       S3_SECRET_ACCESS_KEY: minioadmin
       S3_PUBLIC_URL: http://localhost:9002/mextdir
       S3_FORCE_PATH_STYLE: "true"
+      MEXT_IMPORT_SECRET: ${MEXT_IMPORT_SECRET:?Set MEXT_IMPORT_SECRET}
     ports:
       - "3001:3000"
     command:
@@ -82,6 +83,25 @@ services:
       - .:/app
       - mextdir-dev-node-modules:/app/node_modules
       - mextdir-dev-nuxt:/app/.nuxt
+
+  mextdir-ingest:
+    build:
+      context: ./ingestor
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mextdir:
+        condition: service_started
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/mextdir?schema=public
+      MISTRAL_API_KEY: ${MISTRAL_API_KEY:?Set MISTRAL_API_KEY}
+      MISTRAL_OCR_MODEL: ${MISTRAL_OCR_MODEL:-mistral-ocr-4-0}
+      MEXT_APP_URL: http://mextdir:3000
+      MEXT_IMPORT_SECRET: ${MEXT_IMPORT_SECRET:?Set MEXT_IMPORT_SECRET}
+      MEXT_IMPORT_INTERVAL_SECONDS: ${MEXT_IMPORT_INTERVAL_SECONDS:-86400}
+      MEXT_IMPORT_RUN_ON_START: ${MEXT_IMPORT_RUN_ON_START:-true}
+      PYTHONUNBUFFERED: "1"
 
 volumes:
   mextdir-dev-postgres:

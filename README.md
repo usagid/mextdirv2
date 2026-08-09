@@ -63,6 +63,11 @@ ADMIN_API_KEY="a-long-random-server-only-key"
 TRUST_PROXY="false"
 DEMO_MODE="false"
 STORAGE_DRIVER="local"
+MISTRAL_API_KEY="server-only-mistral-key"
+MISTRAL_OCR_MODEL="mistral-ocr-4-0"
+MEXT_IMPORT_SECRET="server-only-long-random-import-secret"
+MEXT_IMPORT_INTERVAL_SECONDS="86400"
+MEXT_IMPORT_RUN_ON_START="true"
 
 # Required when STORAGE_DRIVER="s3".
 S3_ENDPOINT="http://localhost:9002"
@@ -81,6 +86,19 @@ Use `/admin/setup` for the one-time first-admin setup, then `/admin` to log in. 
 A block matches an exact IP address, a case-insensitive user-agent substring, or both when both fields are set. Blocked public requests still receive listings, but phone and additional-contact fields are blank. Set `TRUST_PROXY=true` only when a trusted reverse proxy controls `X-Forwarded-For`.
 
 The optional `ADMIN_API_KEY` remains a server-only legacy key for `POST /api/schools` and `POST /api/schools/:schoolId/images`; it is never exposed through public runtime config.
+
+## MEXT importer
+
+The `mextdir-ingest` service runs once at startup and then every 24 hours (or what is defined in `MEXT_IMPORT_INTERVAL_SECONDS`). It reads the current-use PDF links from the MEXT 「みんなの廃校」 page, skips the `_00` index PDF, splits each document into chunks of at most 30 pages and 48 MB, sends the chunks to `mistral-ocr-4-0`, extracts each page's images and markdown-backed school data, and upserts both schools and images using deterministic source keys. Schools without extracted images keep the no-photo placeholder. The Mistral key and importer secret are passed only to server-side containers.
+
+Set `MISTRAL_API_KEY` and a random `MEXT_IMPORT_SECRET` in `.env` before starting either stack. To run one import manually:
+
+```bash
+docker compose run --rm mextdir-ingest python importer.py --once
+docker compose -f docker-compose.dev.yml run --rm mextdir-ingest python importer.py --once
+```
+
+Use `--list-links` to verify the MEXT link filter without calling Mistral, or `--dry-run` to OCR without writing PostgreSQL. Imported rows are not removed when a later MEXT page omits them.
 
 ## API
 

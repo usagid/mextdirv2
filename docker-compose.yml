@@ -31,8 +31,28 @@ services:
       ADMIN_API_KEY: ${ADMIN_API_KEY:-}
       STORAGE_DRIVER: local
       UPLOAD_DIR: /app/.output/public/uploads
+      MEXT_IMPORT_SECRET: ${MEXT_IMPORT_SECRET:?Set MEXT_IMPORT_SECRET}
     ports:
       - "3000:3000"
+
+  mextdir-ingest:
+    build:
+      context: ./ingestor
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mextdir:
+        condition: service_started
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/mextdir?schema=public
+      MISTRAL_API_KEY: ${MISTRAL_API_KEY:?Set MISTRAL_API_KEY}
+      MISTRAL_OCR_MODEL: ${MISTRAL_OCR_MODEL:-mistral-ocr-4-0}
+      MEXT_APP_URL: http://mextdir:3000
+      MEXT_IMPORT_SECRET: ${MEXT_IMPORT_SECRET:?Set MEXT_IMPORT_SECRET}
+      MEXT_IMPORT_INTERVAL_SECONDS: ${MEXT_IMPORT_INTERVAL_SECONDS:-86400}
+      MEXT_IMPORT_RUN_ON_START: ${MEXT_IMPORT_RUN_ON_START:-true}
+      PYTHONUNBUFFERED: "1"
 
 volumes:
   mextdir-postgres:
