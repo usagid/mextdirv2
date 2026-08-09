@@ -23,9 +23,13 @@ pnpm dev
 # Option C: build and run both PostgreSQL and mextdir in Docker.
 docker compose up --build -d
 docker compose exec mextdir pnpm db:seed
+
+# Option D: dev Nuxt + PostgreSQL + MinIO S3-compatible storage.
+docker compose -f docker-compose.dev.yml up --build -d
+docker compose -f docker-compose.dev.yml exec mextdir pnpm db:seed
 ```
 
-The app is available at `http://localhost:3000/ja/`. Locale routes are `/ja/...`, `/en/...`, `/zh/...`, and `/ko/...`. The Compose app container applies migrations on startup; the seed command is intentionally manual so restarts do not overwrite listings.
+The production Compose app is available at `http://localhost:3000/ja/`. The dev Compose app is available at `http://localhost:3001/ja/`; MinIO's S3 API is `http://localhost:9002` and its console is `http://localhost:9003` (`minioadmin` / `minioadmin`). Locale routes are `/ja/...`, `/en/...`, `/zh/...`, and `/ko/...`. Compose app containers apply migrations on startup; seed commands are intentionally manual so restarts do not overwrite listings.
 
 `DEMO_MODE=true` (or an absent `DATABASE_URL`) serves eight in-memory mock schools so the UI can be previewed without a database. Demo mode is read-only. Set `DEMO_MODE=false` to use PostgreSQL for API writes.
 
@@ -49,6 +53,15 @@ DATABASE_URL="postgresql://postgres:postgres@localhost:5432/mextdir?schema=publi
 ADMIN_API_KEY="a-long-random-server-only-key"
 DEMO_MODE="false"
 STORAGE_DRIVER="local"
+
+# Required when STORAGE_DRIVER="s3".
+S3_ENDPOINT="http://localhost:9002"
+S3_REGION="us-east-1"
+S3_BUCKET="mextdir"
+S3_ACCESS_KEY_ID="minioadmin"
+S3_SECRET_ACCESS_KEY="minioadmin"
+S3_PUBLIC_URL="http://localhost:9002/mextdir"
+S3_FORCE_PATH_STYLE="true"
 ```
 
 `ADMIN_API_KEY` protects `POST /api/schools` and `POST /api/schools/:schoolId/images`. It is accepted as `Authorization: Bearer ...` or `x-admin-key: ...` and is never exposed through public runtime config.
@@ -101,9 +114,9 @@ curl -X POST http://localhost:3000/api/schools/SCHOOL_ID/images \
 
 ## Image storage
 
-Local uploads are validated as JPEG, PNG, WebP, GIF, or SVG, capped at 10 MB, written to `public/uploads` during local development or `.output/public/uploads` in the production Compose container, and stored in PostgreSQL as `/uploads/<filename>` paths. The checked-in SVGs are only demo art; real uploads are ignored by Git.
+Uploads accept JPEG, PNG, WebP, GIF, and SVG up to 10 MB. Set `STORAGE_DRIVER=local` to write files to `public/uploads` during local development or `.output/public/uploads` in the production Compose container. Set `STORAGE_DRIVER=s3` to upload through the AWS SDK S3 client to any S3-compatible endpoint; PostgreSQL still stores only the returned public URL. The checked-in SVGs are demo art; real local uploads are ignored by Git.
 
-For S3-compatible storage (S3, R2, MinIO, etc.), keep the API and `Image` schema unchanged: replace `saveLocalImage` in `server/utils/storage.ts` with an S3 `PutObject` call, return the public object URL, and set `STORAGE_DRIVER` to a provider value. Add the provider's server-only credentials to runtime config/your deployment secret store. Do not put access keys in `app.config.ts` or client code.
+S3 mode requires `S3_ENDPOINT`, `S3_REGION`, `S3_BUCKET`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`, and `S3_PUBLIC_URL`. `S3_FORCE_PATH_STYLE=true` is useful for MinIO and other local S3-compatible services. The dev Compose file provisions MinIO, creates the `mextdir` bucket, enables anonymous object downloads, and points the app at the host-visible public URL. For production S3/R2/MinIO, keep credentials server-only and make the bucket or CDN URL represented by `S3_PUBLIC_URL` readable by the browser; do not put access keys in `app.config.ts` or client code.
 
 ## Adding translations
 

@@ -9,7 +9,7 @@ import {
 import { z } from "zod";
 import { isDemoMode, prisma } from "../../../utils/db";
 import { requireAdmin } from "../../../utils/admin";
-import { assertSupportedStorage, saveLocalImage } from "../../../utils/storage";
+import { assertSupportedStorage, saveImage } from "../../../utils/storage";
 
 const urlSchema = z
 	.string()
@@ -119,7 +119,7 @@ export default defineEventHandler(async (event) => {
 
 	for (const source of sources) {
 		const url = source.data
-			? await saveLocalImage(
+			? await saveImage(
 					source.data,
 					source.contentType,
 					source.filename,
