@@ -42,7 +42,7 @@ function makeSchool(
 	return {
 		...school,
 		images: imageNumbers.map((number, index) =>
-			demoImage(number, input.id, `${input.schoolName} 写真 ${index + 1}`),
+			demoImage(number, input.id, `${input.schoolName}の画像 ${index + 1}`),
 		),
 		updatedAt: input.createdAt,
 	};

@@ -96,6 +96,15 @@
     "updated": "업데이트",
     "notFound": "학교를 찾을 수 없습니다."
   },
+  "errors": {
+    "status": "오류",
+    "notFoundTitle": "페이지를 찾을 수 없습니다.",
+    "notFoundDescription": "페이지가 이동했거나 존재하지 않을 수 있습니다.",
+    "genericTitle": "문제가 발생했습니다.",
+    "genericDescription": "일시적인 문제가 발생했습니다. 다시 시도하거나 홈으로 돌아가 주세요.",
+    "home": "홈으로 돌아가기",
+    "browse": "학교 목록 보기"
+  },
   "support": {
     "title": "mextdir 후원하기",
     "body": "mextdir는 독립적인 디렉터리입니다. 유용하게 느껴지셨다면 계속 운영될 수 있도록 응원해 주세요.",

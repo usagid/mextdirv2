@@ -96,6 +96,15 @@
     "updated": "Updated",
     "notFound": "School not found."
   },
+  "errors": {
+    "status": "Error",
+    "notFoundTitle": "Page not found.",
+    "notFoundDescription": "The page may have moved or may not exist.",
+    "genericTitle": "Something went wrong.",
+    "genericDescription": "A temporary problem occurred. Try again or return to the homepage.",
+    "home": "Back to homepage",
+    "browse": "Browse schools"
+  },
   "support": {
     "title": "Support mextdir",
     "body": "mextdir is an independent directory. If it is useful to you, please consider supporting its continued work.",
