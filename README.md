@@ -29,7 +29,15 @@ docker compose -f docker-compose.dev.yml up --build -d
 docker compose -f docker-compose.dev.yml exec mextdir pnpm db:seed
 ```
 
-After PostgreSQL is migrated, open `/admin/setup` once to create the first administrator. The production Compose app is available at `http://localhost:3000/ja/`. The dev Compose app is available at `http://localhost:3001/ja/`; MinIO's S3 API is `http://localhost:9002` and its console is `http://localhost:9003` (`minioadmin` / `minioadmin`). Locale routes are `/ja/...`, `/en/...`, `/zh/...`, and `/ko/...`. Compose app containers apply migrations on startup; seed commands are intentionally manual so restarts do not overwrite listings.
+After PostgreSQL is migrated, open `/admin/setup` once to create the first administrator.
+
+| Service       | URL                     | Use                   |
+| ------------- | ----------------------- | --------------------- |
+| Frontend      | `http://localhost:3000` | Production build      |
+| Frontend Dev  | `http://localhost:3001` | Development build     |
+| PostgreSQL    | `http://localhost:5432` | Primary database      |
+| MinIO API     | `http://localhost:9002` | S3 storage API        |
+| MinIO Console | `http://localhost:9003` | S3 management console |
 
 `DEMO_MODE=true` (or an absent `DATABASE_URL`) serves eight in-memory mock schools so the UI can be previewed without a database. Demo mode is read-only. Set `DEMO_MODE=false` to use PostgreSQL for API writes.
 
