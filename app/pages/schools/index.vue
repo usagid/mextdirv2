@@ -110,7 +110,7 @@ useHead(() => ({ title: `mextdir — ${t('listings.title')}` }))
       <section aria-live="polite">
         <div class="mb-5 flex flex-wrap items-center justify-between gap-3 border-b-[3px] border-ink pb-4">
           <p class="eyebrow">{{ t('listings.count', { count: data?.total || 0 }) }}</p>
-          <div class="flex items-center gap-2 font-mono text-xs font-bold uppercase">
+          <div class="flex items-center gap-2 font-mono text-xs font-bold uppercase" data-umami-event="change-listing-sort">
             <span>{{ t('listings.sort') }}</span>
             <VirtualSelect v-model="sort" :options="sortOptions" :placeholder="t('listings.newest')" :aria-label="t('listings.sort')" @update:model-value="changeSort" />
           </div>
@@ -122,16 +122,16 @@ useHead(() => ({ title: `mextdir — ${t('listings.title')}` }))
         <div v-else-if="error" class="brutal-panel bg-tomato p-6 font-mono text-sm font-bold uppercase">{{ error.message }}</div>
         <div v-else-if="!data?.items.length" class="brutal-panel bg-accent p-8 text-center">
           <p class="font-display text-3xl uppercase leading-none tracking-[-0.06em]">{{ t('listings.noResults') }}</p>
-          <button type="button" class="mt-6 border-[3px] border-ink bg-paper px-4 py-3 font-mono text-xs font-bold uppercase hover:bg-white" @click="resetFilters">{{ t('listings.reset') }}</button>
+          <button type="button" class="mt-6 border-[3px] border-ink bg-paper px-4 py-3 font-mono text-xs font-bold uppercase hover:bg-white" data-umami-event="reset-filters" @click="resetFilters">{{ t('listings.reset') }}</button>
         </div>
         <div v-else class="grid gap-5 md:grid-cols-2">
           <ListingCard v-for="school in data.items" :key="school.id" :school="school" />
         </div>
 
         <nav v-if="data && data.totalPages > 1" class="mt-10 flex items-center justify-between border-t-[3px] border-ink pt-5" :aria-label="t('listings.title')">
-          <button type="button" class="border-[3px] border-ink bg-paper px-3 py-2 font-mono text-xs font-bold uppercase disabled:cursor-not-allowed disabled:opacity-40 hover:bg-accent" :disabled="data.page <= 1" @click="changePage(data.page - 1)">{{ t('listings.previous') }}</button>
+          <button type="button" class="border-[3px] border-ink bg-paper px-3 py-2 font-mono text-xs font-bold uppercase disabled:cursor-not-allowed disabled:opacity-40 hover:bg-accent" data-umami-event="paginate-listings" data-umami-event-direction="previous" :disabled="data.page <= 1" @click="changePage(data.page - 1)">{{ t('listings.previous') }}</button>
           <span class="font-mono text-xs font-bold uppercase">{{ t('listings.page', { page: data.page, totalPages: data.totalPages }) }}</span>
-          <button type="button" class="border-[3px] border-ink bg-paper px-3 py-2 font-mono text-xs font-bold uppercase disabled:cursor-not-allowed disabled:opacity-40 hover:bg-accent" :disabled="data.page >= data.totalPages" @click="changePage(data.page + 1)">{{ t('listings.next') }}</button>
+          <button type="button" class="border-[3px] border-ink bg-paper px-3 py-2 font-mono text-xs font-bold uppercase disabled:cursor-not-allowed disabled:opacity-40 hover:bg-accent" data-umami-event="paginate-listings" data-umami-event-direction="next" :disabled="data.page >= data.totalPages" @click="changePage(data.page + 1)">{{ t('listings.next') }}</button>
         </nav>
       </section>
     </div>

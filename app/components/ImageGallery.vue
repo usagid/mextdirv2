@@ -32,6 +32,8 @@ const mainAlt = computed(() => currentImage.value?.altText || t('images.fallback
         :class="index === currentIndex ? 'bg-accent shadow-[3px_3px_0_#111]' : 'opacity-65 hover:opacity-100'"
         :aria-label="t('images.thumbnail', { number: index + 1 })"
         :aria-pressed="index === currentIndex"
+        data-umami-event="select-gallery-image"
+        :data-umami-event-image="String(index + 1)"
         @click="currentIndex = index"
       >
         <NuxtImg :src="image.url" :alt="image.altText || t('images.fallback', { name: schoolName, number: index + 1 })" width="240" height="180" class="h-full w-full object-cover" />

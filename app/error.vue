@@ -31,8 +31,8 @@ useHead(() => ({
         <h1 class="mt-5 font-display text-[clamp(3.5rem,10vw,8rem)] leading-[0.82] tracking-[-0.1em]">{{ title }}</h1>
         <p class="mt-7 max-w-xl text-base leading-relaxed">{{ description }}</p>
         <div class="mt-9 flex flex-wrap gap-4">
-          <button type="button" class="brutal-button" @click="goHome">{{ t('errors.home') }}</button>
-          <NuxtLink :to="localePath('/schools')" class="brutal-button bg-paper">{{ t('errors.browse') }}</NuxtLink>
+          <button type="button" class="brutal-button" data-umami-event="error-go-home" @click="goHome">{{ t('errors.home') }}</button>
+          <NuxtLink :to="localePath('/schools')" class="brutal-button bg-paper" data-umami-event="error-browse-listings">{{ t('errors.browse') }}</NuxtLink>
         </div>
       </section>
     </div>

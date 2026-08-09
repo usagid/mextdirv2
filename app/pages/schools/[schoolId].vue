@@ -73,7 +73,7 @@ useHead(() => ({
 
 <template>
   <div class="page-shell py-8 sm:py-14">
-    <NuxtLink :to="localePath('/schools')" class="inline-flex items-center gap-2 font-mono text-xs font-bold uppercase underline decoration-2 underline-offset-4 hover:bg-accent">
+    <NuxtLink :to="localePath('/schools')" class="inline-flex items-center gap-2 font-mono text-xs font-bold uppercase underline decoration-2 underline-offset-4 hover:bg-accent" data-umami-event="back-to-listings">
       <span aria-hidden="true">←</span> {{ t('detail.back') }}
     </NuxtLink>
 
@@ -105,13 +105,15 @@ useHead(() => ({
             <div v-if="school.phoneNumber && phoneAction" class="flex items-end justify-between gap-3">
               <div class="min-w-0">
                 <p class="eyebrow">{{ t('fields.phoneNumber') }}</p>
-                <a :href="phoneAction.href" class="mt-1 inline-block font-bold underline decoration-2 underline-offset-4 hover:bg-paper" @click="setSupportModalOpen(true)">{{ school.phoneNumber }}</a>
+                <a :href="phoneAction.href" class="mt-1 inline-block font-bold underline decoration-2 underline-offset-4 hover:bg-paper" data-umami-event="contact-phone" @click="setSupportModalOpen(true)">{{ school.phoneNumber }}</a>
               </div>
               <div class="flex shrink-0 flex-wrap justify-end gap-2">
                 <button
                   v-if="phoneCopyValue"
                   type="button"
                   class="brutal-button px-2 py-1 text-[10px] shadow-[2px_2px_0_#111]"
+                  data-umami-event="copy-contact"
+                  data-umami-event-type="phone"
                   @click="copyPhone"
                 >{{ copiedContact === 'phone' ? t('detail.copied') : t('detail.copy') }}</button>
                 <a
@@ -119,6 +121,7 @@ useHead(() => ({
                   class="brutal-button px-2 py-1 text-[10px] shadow-[2px_2px_0_#111]"
                   :target="phoneAction.external ? '_blank' : undefined"
                   :rel="phoneAction.external ? 'noreferrer' : undefined"
+                  data-umami-event="contact-phone"
                   @click="setSupportModalOpen(true)"
                 >{{ phoneAction.label }}</a>
               </div>
@@ -133,6 +136,8 @@ useHead(() => ({
                   v-if="additionalContactCopyValue"
                   type="button"
                   class="brutal-button px-2 py-1 text-[10px] shadow-[2px_2px_0_#111]"
+                  data-umami-event="copy-contact"
+                  data-umami-event-type="additional"
                   @click="copyAdditionalContact"
                 >{{ copiedContact === 'additional' ? t('detail.copied') : t('detail.copy') }}</button>
                 <a
@@ -140,6 +145,7 @@ useHead(() => ({
                   class="brutal-button px-2 py-1 text-[10px] shadow-[2px_2px_0_#111]"
                   :target="additionalContactAction.external ? '_blank' : undefined"
                   :rel="additionalContactAction.external ? 'noreferrer' : undefined"
+                  data-umami-event="contact-additional"
                   @click="setSupportModalOpen(true)"
                 >{{ additionalContactAction.label }}</a>
               </div>
@@ -180,7 +186,7 @@ useHead(() => ({
     >
       <p>{{ t('support.body') }}</p>
       <template #actions>
-        <a :href="supportUrl" class="brutal-button" target="_blank" rel="noreferrer">{{ t('support.link') }}</a>
+        <a :href="supportUrl" class="brutal-button" target="_blank" rel="noreferrer" data-umami-event="support-mextdir">{{ t('support.link') }}</a>
         <button type="button" class="brutal-button" @click="setSupportModalOpen(false)">{{ t('support.close') }}</button>
       </template>
     </Modal>

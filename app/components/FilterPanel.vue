@@ -147,8 +147,8 @@ function reset() {
       </fieldset>
 
       <div class="grid grid-cols-2 gap-2 pt-1">
-        <button type="submit" class="brutal-button col-span-2">{{ t('filters.apply') }}</button>
-        <button type="button" class="border-[3px] border-ink bg-paper px-3 py-2 font-mono text-xs font-bold uppercase hover:bg-white" @click="reset">{{ t('filters.clear') }}</button>
+        <button type="submit" class="brutal-button col-span-2" data-umami-event="apply-filters">{{ t('filters.apply') }}</button>
+        <button type="button" class="border-[3px] border-ink bg-paper px-3 py-2 font-mono text-xs font-bold uppercase hover:bg-white" data-umami-event="reset-filters" @click="reset">{{ t('filters.clear') }}</button>
         <span class="flex items-center justify-end font-mono text-[10px] font-bold uppercase">㎡ = m²</span>
       </div>
     </form>

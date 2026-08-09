@@ -77,7 +77,13 @@ useHead(() => ({ title: `mextdir — ${t('hero.eyebrow')}` }))
               <span class="eyebrow">{{ t('hero.keyword') }}</span>
               <input v-model="search.keyword" class="brutal-input" type="search" :placeholder="t('hero.keywordPlaceholder')">
             </label>
-            <button type="submit" class="brutal-button mt-1 w-full">{{ t('hero.search') }} <span aria-hidden="true" class="ml-2 text-xl leading-none">→</span></button>
+            <button
+              type="submit"
+              class="brutal-button mt-1 w-full"
+              data-umami-event="search-listings"
+              :data-umami-event-prefecture="search.prefecture || 'any'"
+              :data-umami-event-city="search.city || 'any'"
+            >{{ t('hero.search') }} <span aria-hidden="true" class="ml-2 text-xl leading-none">→</span></button>
           </div>
         </form>
       </div>
@@ -89,7 +95,7 @@ useHead(() => ({ title: `mextdir — ${t('hero.eyebrow')}` }))
           <p class="eyebrow">{{ t('home.featuredEyebrow') }}</p>
           <h2 class="section-title mt-3 max-w-3xl whitespace-pre-line">{{ t('home.featuredTitle') }}</h2>
         </div>
-        <NuxtLink :to="localePath('/schools')" class="font-mono text-xs font-bold uppercase underline decoration-2 underline-offset-4 hover:bg-accent">{{ t('home.featuredLink') }} →</NuxtLink>
+        <NuxtLink :to="localePath('/schools')" class="font-mono text-xs font-bold uppercase underline decoration-2 underline-offset-4 hover:bg-accent" data-umami-event="browse-listings" data-umami-event-source="home-featured">{{ t('home.featuredLink') }} →</NuxtLink>
       </div>
 
       <div v-if="pending" class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
@@ -106,7 +112,7 @@ useHead(() => ({ title: `mextdir — ${t('hero.eyebrow')}` }))
         <div>
           <h2 class="whitespace-pre-line font-display text-[clamp(2.6rem,6vw,6rem)] leading-[0.88] tracking-[-0.08em]">{{ t('home.manifestoTitle') }}</h2>
           <p class="mt-8 max-w-2xl text-base leading-relaxed text-paper/75 sm:text-lg">{{ t('home.manifestoText') }}</p>
-          <NuxtLink :to="localePath('/about')" class="mt-8 inline-flex border-[3px] border-paper px-4 py-3 font-mono text-xs font-bold uppercase tracking-[0.1em] hover:bg-accent hover:text-ink">{{ t('nav.about') }} <span aria-hidden="true" class="ml-3">↗</span></NuxtLink>
+          <NuxtLink :to="localePath('/about')" class="mt-8 inline-flex border-[3px] border-paper px-4 py-3 font-mono text-xs font-bold uppercase tracking-[0.1em] hover:bg-accent hover:text-ink" data-umami-event="navigate-about" data-umami-event-source="home-manifesto">{{ t('nav.about') }} <span aria-hidden="true" class="ml-3">↗</span></NuxtLink>
         </div>
       </div>
     </section>

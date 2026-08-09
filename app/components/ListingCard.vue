@@ -11,7 +11,14 @@ const floorArea = computed(() => new Intl.NumberFormat(locale.value).format(prop
 
 <template>
   <article class="group flex h-full flex-col border-[3px] border-ink bg-paper shadow-brutal transition-transform duration-150 hover:-translate-x-1 hover:-translate-y-1 hover:shadow-brutal-lg">
-    <NuxtLink :to="localePath(`/schools/${school.id}`)" class="flex h-full flex-col" :aria-label="`${school.schoolName} — ${t('card.viewDetails')}`">
+    <NuxtLink
+      :to="localePath(`/schools/${school.id}`)"
+      class="flex h-full flex-col"
+      :aria-label="`${school.schoolName} — ${t('card.viewDetails')}`"
+      data-umami-event="view-listing"
+      :data-umami-event-school="school.schoolName"
+      :data-umami-event-prefecture="school.prefecture"
+    >
       <div class="relative aspect-[4/3] overflow-hidden border-b-[3px] border-ink bg-sky">
         <NuxtImg :src="image" :alt="school.images[0]?.altText || school.schoolName" width="900" height="675" sizes="sm:100vw md:50vw lg:33vw" class="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]" />
         <span class="absolute left-3 top-3 border-[2px] border-ink bg-accent px-2 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.12em] shadow-[3px_3px_0_#111]">{{ t('card.open') }}</span>

@@ -4,9 +4,9 @@ const localePath = useLocalePath()
 const isMenuOpen = ref(false)
 
 const links = computed(() => [
-  { label: t('nav.home'), to: localePath('/') },
-  { label: t('nav.listings'), to: localePath('/schools') },
-  { label: t('nav.about'), to: localePath('/about') },
+  { label: t('nav.home'), to: localePath('/'), event: 'navigate-home' },
+  { label: t('nav.listings'), to: localePath('/schools'), event: 'navigate-listings' },
+  { label: t('nav.about'), to: localePath('/about'), event: 'navigate-about' },
 ])
 
 function closeMenu() {
@@ -29,6 +29,7 @@ function closeMenu() {
           :to="link.to"
           class="font-mono text-xs font-bold uppercase tracking-[0.12em] underline-offset-4 hover:bg-accent hover:underline"
           active-class="bg-accent"
+          :data-umami-event="link.event"
         >
           {{ link.label }}
         </NuxtLink>
@@ -40,6 +41,7 @@ function closeMenu() {
         class="border-[3px] border-ink bg-accent px-3 py-2 font-mono text-xs font-bold uppercase shadow-[3px_3px_0_#111] md:hidden"
         :aria-expanded="isMenuOpen"
         aria-controls="mobile-navigation"
+        data-umami-event="toggle-mobile-menu"
         @click="isMenuOpen = !isMenuOpen"
       >
         {{ isMenuOpen ? '×' : 'menu' }}
@@ -53,6 +55,7 @@ function closeMenu() {
           :key="link.to"
           :to="link.to"
           class="border-b-2 border-ink py-3 font-mono text-sm font-bold uppercase tracking-[0.12em] last:border-b-0"
+          :data-umami-event="link.event"
           @click="closeMenu"
         >
           {{ link.label }}
