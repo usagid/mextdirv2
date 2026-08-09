@@ -247,6 +247,29 @@ function contains(value: string, query: string) {
 	return value.toLocaleLowerCase().includes(query.toLocaleLowerCase());
 }
 
+const facilityMatchers: Record<string, string[]> = {
+	"school-building": ["校舎", "園舎"],
+	gym: ["体育館", "屋内運動場", "屋体"],
+	pool: ["プール"],
+	field: ["グラウンド", "グランド", "校庭", "運動場"],
+	residence: ["寮", "教員住宅", "宿舎"],
+};
+const structureMatchers: Record<string, string[]> = {
+	wood: ["木造"],
+	concrete: ["鉄筋コンクリート", "RC"],
+	steel: ["鉄骨", "S造"],
+};
+
+function matchesCategory(
+	value: string,
+	query: string,
+	matchers: Record<string, string[]>,
+) {
+	return (matchers[query] || [query]).some((matcher) =>
+		contains(value, matcher),
+	);
+}
+
 export function listDemoSchools(
 	filters: SchoolFilters = {},
 ): SchoolListResponse {
@@ -256,10 +279,21 @@ export function listDemoSchools(
 		if (filters.city && !contains(school.city, filters.city)) return false;
 		if (
 			filters.facilityType &&
-			!contains(school.facilityInfo, filters.facilityType)
+			!matchesCategory(
+				school.facilityInfo,
+				filters.facilityType,
+				facilityMatchers,
+			)
 		)
 			return false;
-		if (filters.structure && !contains(school.structureInfo, filters.structure))
+		if (
+			filters.structure &&
+			!matchesCategory(
+				school.structureInfo,
+				filters.structure,
+				structureMatchers,
+			)
+		)
 			return false;
 		if (
 			filters.floorAreaMin !== undefined &&
@@ -271,6 +305,26 @@ export function listDemoSchools(
 			school.floorArea > filters.floorAreaMax
 		)
 			return false;
+		if (
+			filters.buildingAreaMin !== undefined &&
+			school.buildingArea < filters.buildingAreaMin
+		)
+			return false;
+		if (
+			filters.buildingAreaMax !== undefined &&
+			school.buildingArea > filters.buildingAreaMax
+		)
+			return false;
+		if (
+			filters.floorNumMin !== undefined &&
+			school.floorNum < filters.floorNumMin
+		)
+			return false;
+		if (
+			filters.floorNumMax !== undefined &&
+			school.floorNum > filters.floorNumMax
+		)
+			return false;
 		if (filters.keyword) {
 			const haystack = [
 				school.schoolName,
@@ -278,6 +332,10 @@ export function listDemoSchools(
 				school.address,
 				school.closestPoi,
 				school.facilityInfo,
+				school.structureInfo,
+				school.lister,
+				school.recruitment,
+				school.conditions,
 			].join(" ");
 			if (!contains(haystack, filters.keyword)) return false;
 		}
@@ -292,7 +350,7 @@ export function listDemoSchools(
 		return b.createdAt.localeCompare(a.createdAt);
 	});
 
-	const pageSize = 9;
+	const pageSize = 10;
 	const page = Math.max(1, filters.page || 1);
 	const total = results.length;
 	const totalPages = Math.max(1, Math.ceil(total / pageSize));

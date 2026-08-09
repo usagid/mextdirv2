@@ -10,6 +10,10 @@ export interface SchoolFilterModel {
   structure: string
   floorAreaMin: string
   floorAreaMax: string
+  buildingAreaMin: string
+  buildingAreaMax: string
+  floorNumMin: string
+  floorNumMax: string
 }
 
 const props = defineProps<{
@@ -33,10 +37,19 @@ const prefectureOptions = computed<VirtualSelectOption[]>(() => [
     count: prefecture.count,
   })),
 ])
+const facilityOptions = computed<VirtualSelectOption[]>(() => [
+  { value: '', label: t('filters.any') },
+  { value: 'school-building', label: t('filters.facilitySchool') },
+  { value: 'gym', label: t('filters.facilityGym') },
+  { value: 'pool', label: t('filters.facilityPool') },
+  { value: 'field', label: t('filters.facilityField') },
+  { value: 'residence', label: t('filters.facilityResidence') },
+])
 const structureOptions = computed<VirtualSelectOption[]>(() => [
   { value: '', label: t('filters.any') },
-  { value: '木造', label: '木造' },
-  { value: '鉄筋コンクリート造', label: '鉄筋コンクリート造' },
+  { value: 'wood', label: t('filters.structureWood') },
+  { value: 'concrete', label: t('filters.structureConcrete') },
+  { value: 'steel', label: t('filters.structureSteel') },
 ])
 const selectedPrefecture = computed({
   get: () => local.prefecture,
@@ -69,7 +82,7 @@ function submit() {
 
 function reset() {
   Object.assign(local, {
-    prefecture: '', city: '', keyword: '', facilityType: '', structure: '', floorAreaMin: '', floorAreaMax: '',
+    prefecture: '', city: '', keyword: '', facilityType: '', structure: '', floorAreaMin: '', floorAreaMax: '', buildingAreaMin: '', buildingAreaMax: '', floorNumMin: '', floorNumMax: '',
   })
   update()
   emit('reset')
@@ -80,7 +93,7 @@ function reset() {
   <aside class="border-[3px] border-ink bg-accent p-4 shadow-brutal sm:p-5">
     <div class="mb-5 flex items-baseline justify-between gap-4 border-b-[3px] border-ink pb-3">
       <h2 class="font-display text-2xl uppercase leading-none tracking-[-0.06em]">{{ t('filters.title') }}</h2>
-      <span class="font-mono text-[10px] font-bold uppercase">01—07</span>
+      <span class="font-mono text-[10px] font-bold uppercase">01—08</span>
     </div>
 
     <form class="grid gap-4" @submit.prevent="submit">
@@ -89,9 +102,9 @@ function reset() {
         <VirtualSelect v-model="selectedPrefecture" :options="prefectureOptions" :placeholder="t('filters.any')" :aria-label="t('filters.prefecture')" />
       </div>
 
-      <div v-if="local.prefecture" class="grid gap-1.5">
+      <div class="grid gap-1.5">
         <span class="eyebrow">{{ t('filters.city') }}</span>
-        <VirtualSelect v-model="local.city" :options="cityOptions" :placeholder="t('filters.any')" :aria-label="t('filters.city')" />
+        <VirtualSelect v-model="local.city" :options="cityOptions" :placeholder="t('filters.any')" :aria-label="t('filters.city')" :disabled="!local.prefecture" />
       </div>
 
       <label class="grid gap-1.5">
@@ -99,10 +112,10 @@ function reset() {
         <input v-model="local.keyword" class="brutal-input" type="search" :placeholder="t('hero.keywordPlaceholder')">
       </label>
 
-      <label class="grid gap-1.5">
+      <div class="grid gap-1.5">
         <span class="eyebrow">{{ t('filters.facilityType') }}</span>
-        <input v-model="local.facilityType" class="brutal-input" type="text" placeholder="小学校 / 体育館">
-      </label>
+        <VirtualSelect v-model="local.facilityType" :options="facilityOptions" :placeholder="t('filters.any')" :aria-label="t('filters.facilityType')" />
+      </div>
 
       <div class="grid gap-1.5">
         <span class="eyebrow">{{ t('filters.structure') }}</span>
@@ -114,6 +127,22 @@ function reset() {
         <div class="grid grid-cols-2 gap-2">
           <input v-model="local.floorAreaMin" class="brutal-input" type="number" min="0" :placeholder="t('filters.floorAreaMin')" :aria-label="t('filters.floorAreaMin')">
           <input v-model="local.floorAreaMax" class="brutal-input" type="number" min="0" :placeholder="t('filters.floorAreaMax')" :aria-label="t('filters.floorAreaMax')">
+        </div>
+      </fieldset>
+
+      <fieldset class="grid gap-1.5">
+        <legend class="eyebrow">{{ t('filters.buildingArea') }}</legend>
+        <div class="grid grid-cols-2 gap-2">
+          <input v-model="local.buildingAreaMin" class="brutal-input" type="number" min="0" :placeholder="t('filters.buildingAreaMin')" :aria-label="t('filters.buildingAreaMin')">
+          <input v-model="local.buildingAreaMax" class="brutal-input" type="number" min="0" :placeholder="t('filters.buildingAreaMax')" :aria-label="t('filters.buildingAreaMax')">
+        </div>
+      </fieldset>
+
+      <fieldset class="grid gap-1.5">
+        <legend class="eyebrow">{{ t('filters.floorNum') }}</legend>
+        <div class="grid grid-cols-2 gap-2">
+          <input v-model="local.floorNumMin" class="brutal-input" type="number" min="0" :placeholder="t('filters.floorNumMin')" :aria-label="t('filters.floorNumMin')">
+          <input v-model="local.floorNumMax" class="brutal-input" type="number" min="0" :placeholder="t('filters.floorNumMax')" :aria-label="t('filters.floorNumMax')">
         </div>
       </fieldset>
 

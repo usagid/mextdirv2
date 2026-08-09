@@ -11,7 +11,7 @@ const { data: prefectures } = await useFetch<PrefectureOption[]>('/api/prefectur
 })
 const { data: featured, pending } = await useFetch<SchoolListResponse>('/api/schools', {
   query: { page: 1, sort: 'newest' },
-  default: () => ({ items: [], total: 0, page: 1, pageSize: 9, totalPages: 1 }),
+  default: () => ({ items: [], total: 0, page: 1, pageSize: 10, totalPages: 1 }),
 })
 
 const prefectureOptions = computed(() => [
@@ -69,9 +69,9 @@ useHead(() => ({ title: `mextdir — ${t('hero.eyebrow')}` }))
               <span class="eyebrow">{{ t('hero.prefecture') }}</span>
               <VirtualSelect v-model="selectedPrefecture" :options="prefectureOptions" :placeholder="t('filters.any')" :aria-label="t('hero.prefecture')" />
             </div>
-            <div v-if="search.prefecture" class="grid gap-1.5">
+            <div class="grid gap-1.5">
               <span class="eyebrow">{{ t('hero.city') }}</span>
-              <VirtualSelect v-model="search.city" :options="cityOptions" :placeholder="t('filters.any')" :aria-label="t('hero.city')" />
+              <VirtualSelect v-model="search.city" :options="cityOptions" :placeholder="t('filters.any')" :aria-label="t('hero.city')" :disabled="!search.prefecture" />
             </div>
             <label class="grid gap-1.5">
               <span class="eyebrow">{{ t('hero.keyword') }}</span>

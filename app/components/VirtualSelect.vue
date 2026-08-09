@@ -12,8 +12,10 @@ const props = withDefaults(defineProps<{
   options: VirtualSelectOption[]
   placeholder: string
   ariaLabel?: string
+  disabled?: boolean
 }>(), {
   ariaLabel: '',
+  disabled: false,
 })
 
 const emit = defineEmits<{
@@ -37,6 +39,7 @@ function syncActiveIndex() {
 }
 
 function open() {
+  if (props.disabled) return
   syncActiveIndex()
   isOpen.value = true
 }
@@ -51,6 +54,7 @@ function toggle() {
 }
 
 function choose(option: VirtualSelectOption) {
+  if (props.disabled) return
   emit('update:modelValue', option.value)
   close()
 }
@@ -62,6 +66,7 @@ function moveActive(direction: 1 | -1) {
 }
 
 function handleKeydown(event: KeyboardEvent) {
+  if (props.disabled) return
   if (event.key === 'Escape') {
     event.preventDefault()
     close()
@@ -100,6 +105,9 @@ function handleDocumentClick(event: MouseEvent) {
 }
 
 watch(() => props.modelValue, syncActiveIndex)
+watch(() => props.disabled, (disabled) => {
+  if (disabled) close()
+})
 
 onMounted(() => document.addEventListener('click', handleDocumentClick))
 onBeforeUnmount(() => document.removeEventListener('click', handleDocumentClick))
@@ -110,8 +118,10 @@ onBeforeUnmount(() => document.removeEventListener('click', handleDocumentClick)
     <button
       type="button"
       role="combobox"
-      class="brutal-input flex items-center justify-between gap-3 text-left"
+      :disabled="disabled"
+      class="brutal-input flex items-center justify-between gap-3 text-left disabled:cursor-not-allowed disabled:opacity-50"
       :aria-label="ariaLabel || placeholder"
+      :aria-disabled="disabled"
       :aria-controls="`${id}-listbox`"
       :aria-expanded="isOpen"
       :aria-activedescendant="isOpen ? optionId(activeIndex) : undefined"

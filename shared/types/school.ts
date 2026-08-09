@@ -48,6 +48,10 @@ export interface SchoolFilters {
 	facilityType?: string;
 	floorAreaMin?: number;
 	floorAreaMax?: number;
+	buildingAreaMin?: number;
+	buildingAreaMax?: number;
+	floorNumMin?: number;
+	floorNumMax?: number;
 	structure?: string;
 	sort?: string;
 	page?: number;

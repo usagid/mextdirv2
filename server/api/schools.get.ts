@@ -17,6 +17,40 @@ const sortOrder: Record<string, Prisma.SchoolOrderByWithRelationInput> = {
 	"floor-asc": { floorArea: "asc" },
 };
 
+function structureWhere(value: string): Prisma.SchoolWhereInput {
+	const matchers: Record<string, string[]> = {
+		wood: ["木造"],
+		concrete: ["鉄筋コンクリート", "RC"],
+		steel: ["鉄骨", "S造"],
+	};
+	const values = matchers[value];
+	if (!values)
+		return { structureInfo: { contains: value, mode: "insensitive" } };
+	return {
+		OR: values.map((matcher) => ({
+			structureInfo: { contains: matcher, mode: "insensitive" },
+		})),
+	};
+}
+
+function facilityWhere(value: string): Prisma.SchoolWhereInput {
+	const matchers: Record<string, string[]> = {
+		"school-building": ["校舎", "園舎"],
+		gym: ["体育館", "屋内運動場", "屋体"],
+		pool: ["プール"],
+		field: ["グラウンド", "グランド", "校庭", "運動場"],
+		residence: ["寮", "教員住宅", "宿舎"],
+	};
+	const values = matchers[value];
+	if (!values)
+		return { facilityInfo: { contains: value, mode: "insensitive" } };
+	return {
+		OR: values.map((matcher) => ({
+			facilityInfo: { contains: matcher, mode: "insensitive" },
+		})),
+	};
+}
+
 export default defineEventHandler(async (event) => {
 	const query = getQuery(event);
 	const filters: SchoolFilters = {
@@ -27,18 +61,27 @@ export default defineEventHandler(async (event) => {
 		structure: queryString(query.structure) || undefined,
 		floorAreaMin: queryInteger(query.floorAreaMin),
 		floorAreaMax: queryInteger(query.floorAreaMax),
+		buildingAreaMin: queryInteger(query.buildingAreaMin),
+		buildingAreaMax: queryInteger(query.buildingAreaMax),
+		floorNumMin: queryInteger(query.floorNumMin),
+		floorNumMax: queryInteger(query.floorNumMax),
 		sort: queryString(query.sort) || "newest",
 		page: Math.max(1, queryInteger(query.page, 1) || 1),
 	};
 
-	if (
-		filters.floorAreaMin !== undefined &&
-		filters.floorAreaMax !== undefined &&
-		filters.floorAreaMin > filters.floorAreaMax
-	) {
+	const ranges = [
+		["floorArea", filters.floorAreaMin, filters.floorAreaMax],
+		["buildingArea", filters.buildingAreaMin, filters.buildingAreaMax],
+		["floorNum", filters.floorNumMin, filters.floorNumMax],
+	] as const;
+	const invalidRange = ranges.find(
+		([, minimum, maximum]) =>
+			minimum !== undefined && maximum !== undefined && minimum > maximum,
+	);
+	if (invalidRange) {
 		throw createError({
 			statusCode: 400,
-			statusMessage: "floorAreaMin must be less than floorAreaMax",
+			statusMessage: `${invalidRange[0]} minimum must be less than maximum`,
 		});
 	}
 
@@ -48,38 +91,59 @@ export default defineEventHandler(async (event) => {
 		return hideContacts ? maskSchoolList(result) : result;
 	}
 
+	const conditions: Prisma.SchoolWhereInput[] = [];
+	if (filters.facilityType)
+		conditions.push(facilityWhere(filters.facilityType));
+	if (filters.structure) conditions.push(structureWhere(filters.structure));
+	if (
+		filters.floorAreaMin !== undefined ||
+		filters.floorAreaMax !== undefined
+	) {
+		conditions.push({
+			floorArea: { gte: filters.floorAreaMin, lte: filters.floorAreaMax },
+		});
+	}
+	if (
+		filters.buildingAreaMin !== undefined ||
+		filters.buildingAreaMax !== undefined
+	) {
+		conditions.push({
+			buildingArea: {
+				gte: filters.buildingAreaMin,
+				lte: filters.buildingAreaMax,
+			},
+		});
+	}
+	if (filters.floorNumMin !== undefined || filters.floorNumMax !== undefined) {
+		conditions.push({
+			floorNum: { gte: filters.floorNumMin, lte: filters.floorNumMax },
+		});
+	}
+	if (filters.keyword) {
+		conditions.push({
+			OR: [
+				{ schoolName: { contains: filters.keyword, mode: "insensitive" } },
+				{ city: { contains: filters.keyword, mode: "insensitive" } },
+				{ address: { contains: filters.keyword, mode: "insensitive" } },
+				{ closestPoi: { contains: filters.keyword, mode: "insensitive" } },
+				{ facilityInfo: { contains: filters.keyword, mode: "insensitive" } },
+				{ structureInfo: { contains: filters.keyword, mode: "insensitive" } },
+				{ lister: { contains: filters.keyword, mode: "insensitive" } },
+				{ recruitment: { contains: filters.keyword, mode: "insensitive" } },
+				{ conditions: { contains: filters.keyword, mode: "insensitive" } },
+			],
+		});
+	}
+
 	const where: Prisma.SchoolWhereInput = {
 		...(filters.prefecture ? { prefecture: filters.prefecture } : {}),
 		...(filters.city
 			? { city: { contains: filters.city, mode: "insensitive" } }
 			: {}),
-		...(filters.facilityType
-			? {
-					facilityInfo: { contains: filters.facilityType, mode: "insensitive" },
-				}
-			: {}),
-		...(filters.structure
-			? { structureInfo: { contains: filters.structure, mode: "insensitive" } }
-			: {}),
-		...(filters.floorAreaMin !== undefined || filters.floorAreaMax !== undefined
-			? { floorArea: { gte: filters.floorAreaMin, lte: filters.floorAreaMax } }
-			: {}),
-		...(filters.keyword
-			? {
-					OR: [
-						{ schoolName: { contains: filters.keyword, mode: "insensitive" } },
-						{ city: { contains: filters.keyword, mode: "insensitive" } },
-						{ address: { contains: filters.keyword, mode: "insensitive" } },
-						{ closestPoi: { contains: filters.keyword, mode: "insensitive" } },
-						{
-							facilityInfo: { contains: filters.keyword, mode: "insensitive" },
-						},
-					],
-				}
-			: {}),
+		...(conditions.length ? { AND: conditions } : {}),
 	};
 
-	const pageSize = 9;
+	const pageSize = 10;
 	const orderBy: Prisma.SchoolOrderByWithRelationInput = sortOrder[
 		filters.sort || "newest"
 	] || { createdAt: "desc" };

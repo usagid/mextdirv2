@@ -22,6 +22,10 @@ function filtersFromRoute(): SchoolFilterModel {
     structure: valueOf(route.query.structure),
     floorAreaMin: valueOf(route.query.floorAreaMin),
     floorAreaMax: valueOf(route.query.floorAreaMax),
+    buildingAreaMin: valueOf(route.query.buildingAreaMin),
+    buildingAreaMax: valueOf(route.query.buildingAreaMax),
+    floorNumMin: valueOf(route.query.floorNumMin),
+    floorNumMax: valueOf(route.query.floorNumMax),
   }
 }
 
@@ -47,7 +51,7 @@ const requestQuery = computed(() => ({
 
 const { data, pending, error } = await useFetch<SchoolListResponse>('/api/schools', {
   query: requestQuery,
-  default: () => ({ items: [], total: 0, page: 1, pageSize: 9, totalPages: 1 }),
+  default: () => ({ items: [], total: 0, page: 1, pageSize: 10, totalPages: 1 }),
 })
 
 watch(() => route.query, () => {
