@@ -1,4 +1,5 @@
 import { createError, defineEventHandler, getQuery } from "h3";
+import type { H3Event } from "h3";
 import type { Prisma } from "@prisma/client";
 import type { SchoolFilters } from "../../shared/types/school";
 import { isDemoMode } from "../utils/db";
@@ -9,6 +10,7 @@ import {
 } from "../utils/access-blocks";
 import { listSchools } from "../utils/school-repository";
 import { queryInteger, queryString } from "../utils/school-validation";
+import { withX402Payment } from "../utils/x402";
 
 const sortOrder: Record<string, Prisma.SchoolOrderByWithRelationInput> = {
 	newest: { createdAt: "desc" },
@@ -51,7 +53,7 @@ function facilityWhere(value: string): Prisma.SchoolWhereInput {
 	};
 }
 
-export default defineEventHandler(async (event) => {
+async function handleSchools(event: H3Event) {
 	const query = getQuery(event);
 	const filters: SchoolFilters = {
 		prefecture: queryString(query.prefecture) || undefined,
@@ -162,4 +164,8 @@ export default defineEventHandler(async (event) => {
 		pageSize,
 		totalPages: Math.max(1, Math.ceil(result.total / pageSize)),
 	};
-});
+}
+
+export default defineEventHandler((event) =>
+	withX402Payment(event, () => handleSchools(event)),
+);

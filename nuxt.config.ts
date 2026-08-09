@@ -60,6 +60,11 @@ export default defineNuxtConfig({
 					content:
 						"日本全国の廃校・未利用の学校施設を検索できる情報ディレクトリ。地域、面積、構造などの条件から、活用を検討できる学校施設を探せます。",
 				},
+				{
+					name: "keywords",
+					content:
+						"みんなの廃校, 廃校, 廃校活用, 廃校利用, 未利用校舎, 学校施設, 学校跡地, 地域活性化, 公共施設活用, abandoned schools, vacant schools, unused school buildings, school reuse, school facilities, community revitalization, Japan",
+				},
 				{ name: "theme-color", content: "#f5f1e8" },
 			],
 		},

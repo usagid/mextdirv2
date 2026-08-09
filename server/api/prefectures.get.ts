@@ -1,10 +1,12 @@
 import { defineEventHandler } from "h3";
+import type { H3Event } from "h3";
 import type { PrefectureOption } from "../../shared/types/prefecture";
 import { isDemoMode, prisma } from "../utils/db";
 import { demoSchools } from "../utils/demo-schools";
 import { prefectureOptions } from "../utils/prefectures";
+import { withX402Payment } from "../utils/x402";
 
-export default defineEventHandler(async (): Promise<PrefectureOption[]> => {
+async function handlePrefectures(_event: H3Event): Promise<PrefectureOption[]> {
 	if (isDemoMode()) {
 		const counts = new Map<string, number>();
 		for (const school of demoSchools) {
@@ -22,4 +24,8 @@ export default defineEventHandler(async (): Promise<PrefectureOption[]> => {
 	);
 
 	return prefectureOptions(counts);
-});
+}
+
+export default defineEventHandler((event) =>
+	withX402Payment(event, () => handlePrefectures(event)),
+);

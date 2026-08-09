@@ -1,4 +1,5 @@
 import { createError, defineEventHandler, getRouterParam } from "h3";
+import type { H3Event } from "h3";
 import { isDemoMode, prisma } from "../../utils/db";
 import { findDemoSchool } from "../../utils/demo-schools";
 import {
@@ -9,8 +10,9 @@ import {
 	schoolDetailInclude,
 	serializeSchool,
 } from "../../utils/school-repository";
+import { withX402Payment } from "../../utils/x402";
 
-export default defineEventHandler(async (event) => {
+async function handleSchool(event: H3Event) {
 	const schoolId = getRouterParam(event, "schoolId");
 
 	if (!schoolId) {
@@ -38,4 +40,8 @@ export default defineEventHandler(async (event) => {
 	}
 
 	return serializeSchool(school, { hideContacts });
-});
+}
+
+export default defineEventHandler((event) =>
+	withX402Payment(event, () => handleSchool(event)),
+);

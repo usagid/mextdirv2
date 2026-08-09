@@ -64,6 +64,16 @@ DATABASE_URL="postgresql://postgres:postgres@localhost:5432/mextdir?schema=publi
 ADMIN_API_KEY="a-long-random-server-only-key"
 UMAMI_URL="https://a.uwu.so"
 UMAMI_WEBSITE_ID="8ff1d5ce-d5c1-4afd-8787-7ce7244e5d33"
+# x402: direct development uses testnets; production Compose forces mainnet.
+X402_ENABLED="false"
+X402_ENVIRONMENT="development"
+X402_FACILITATOR_URL="https://x402.org/facilitator"
+X402_PRODUCTION_FACILITATOR_URL="https://x402.dexter.cash"
+X402_FACILITATOR_AUTH_TOKEN=""
+X402_EVM_PAY_TO="0x959122793E6442837f177684CAf4CDDeBE27A606"
+X402_SOLANA_PAY_TO="9MhMoXGiPfp3unKujAfcx1bRgNz63kTuWYvtcqVk5G4C"
+X402_SOLANA_RPC_URL="https://api.devnet.solana.com"
+# Production requires a mainnet-capable facilitator; x402.org/facilitator is testnet-only.
 TRUST_PROXY="false"
 DEMO_MODE="false"
 # Direct `pnpm dev` uses local files. Both Compose stacks override this to MinIO S3.
@@ -114,6 +124,16 @@ Use `--list-links` to verify the MEXT link filter without calling Mistral, or `-
 - `POST /api/schools/:schoolId/images` — admin; multipart fields `file`/`files`, optional `altText`, or JSON `{ "url": "/uploads/example.jpg" }`
 - `GET /api/prefectures`
 - `GET /api/cities?prefecture=長野県`
+
+For non-browser clients, these public JSON routes use x402 when `X402_ENABLED=true`:
+
+| Resource | Price | Route |
+| --- | ---: | --- |
+| School search | $10 USDC | `GET /api/schools` |
+| One school listing | $5 USDC | `GET /api/schools/:schoolId` |
+| Other public API access | $3 USDC | `GET /api/*` |
+
+Payments accept exact USDC on Base and Solana. Development uses Base Sepolia and Solana devnet; production is hard-coded to Base and Solana mainnet and rejects the testnet facilitator. Browser requests remain free so the public website works, while agents can send `X-Mextdir-Client: agent` or use a non-browser user agent. Image URLs are not paid.
 
 Example listing creation:
 
