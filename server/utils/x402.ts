@@ -121,11 +121,12 @@ function paidRoute(
 	config: X402Config,
 	price: string,
 	description: string,
+	mimeType = "application/json",
 ): RouteConfig {
 	return {
 		accepts: paymentOptions(config, price),
 		description,
-		mimeType: "application/json",
+		mimeType,
 		serviceName: "mextdir",
 		tags: ["mextdir", "school-data", "ai-agent"],
 		unpaidResponseBody: () => ({
@@ -149,6 +150,12 @@ function createRoutes(config: X402Config): Record<string, RouteConfig> {
 			config,
 			"$5",
 			"Read one mextdir school listing",
+		),
+		"GET /sitemap.xml": paidRoute(
+			config,
+			"$3000",
+			"Access the mextdir XML sitemap",
+			"application/xml",
 		),
 		"GET /api/*": paidRoute(config, "$3", "Access the mextdir JSON API"),
 	};
@@ -243,6 +250,9 @@ function applyResponse(
 export async function withX402Payment(
 	event: H3Event,
 	handler: () => unknown | Promise<unknown>,
+	responseHeaders: Record<string, string> = {
+		"content-type": "application/json",
+	},
 ) {
 	if (!isEnabled() || isBrowserRequest(event)) return handler();
 
@@ -272,11 +282,11 @@ export async function withX402Payment(
 		{
 			request: context,
 			responseBody: responseBodyBuffer(body),
-			responseHeaders: { "content-type": "application/json" },
+			responseHeaders,
 		},
 	);
 
 	if (!settlement.success) return applyResponse(event, settlement.response);
-	setResponseHeaders(event, settlement.headers);
+	setResponseHeaders(event, { ...responseHeaders, ...settlement.headers });
 	return body;
 }
