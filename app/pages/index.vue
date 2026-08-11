@@ -47,7 +47,12 @@ function searchListings() {
   navigateTo({ path: localePath('/schools'), query })
 }
 
-useHead(() => ({ title: `mextdir — ${t('hero.eyebrow')}` }))
+usePublicSeo({
+  title: () => t('seo.homeTitle'),
+  description: () => t('seo.homeDescription'),
+  keywords: () => t('seo.keywords'),
+  path: '/',
+})
 </script>
 
 <template>

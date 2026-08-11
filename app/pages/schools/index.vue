@@ -88,7 +88,12 @@ function changePage(page: number) {
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
-useHead(() => ({ title: `mextdir — ${t('listings.title')}` }))
+usePublicSeo({
+  title: () => t('seo.listingsTitle'),
+  description: () => t('seo.listingsDescription'),
+  keywords: () => t('seo.keywords'),
+  path: '/schools',
+})
 </script>
 
 <template>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { School } from '../../../shared/types/school'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const localePath = useLocalePath()
 const { track } = useUmami()
 const route = useRoute()
@@ -73,9 +73,96 @@ function copyAdditionalContact() {
   }
 }
 
-useHead(() => ({
-  title: school.value ? `${school.value.schoolName} — mextdir` : `mextdir — ${t('detail.notFound')}`,
-}))
+const detailPath = computed(() => `/schools/${schoolId.value}`)
+const seoConfig = useRuntimeConfig()
+const requestUrl = useRequestURL()
+const seoSiteUrl = String(seoConfig.public.siteUrl || requestUrl.origin).replace(/\/+$/, '')
+const detailLocation = computed(() => [school.value?.prefecture, school.value?.city].filter(Boolean).join(''))
+const detailTitle = computed(() => school.value
+  ? t('seo.detailTitle', { schoolName: school.value.schoolName, location: detailLocation.value })
+  : t('seo.notFoundTitle'))
+const detailDescription = computed(() => school.value
+  ? t('seo.detailDescription', { schoolName: school.value.schoolName, location: detailLocation.value })
+  : t('seo.siteDescription'))
+const detailKeywords = computed(() => school.value
+  ? [t('seo.keywords'), school.value.schoolName, school.value.prefecture, school.value.city, school.value.facilityInfo, school.value.structureInfo].filter(Boolean).join(', ')
+  : t('seo.keywords'))
+
+function absoluteSeoUrl(value: string) {
+  return new URL(value, `${seoSiteUrl}/`).toString()
+}
+
+const structuredData = computed(() => {
+  const item = school.value
+  if (!item) return null
+
+  const pageUrl = absoluteSeoUrl(localePath(detailPath.value))
+  const homeUrl = absoluteSeoUrl(localePath('/'))
+  const listingsUrl = absoluteSeoUrl(localePath('/schools'))
+  const imageUrls = item.images.map(image => absoluteSeoUrl(image.url))
+  const additionalProperty = [
+    ['施設種別', item.facilityInfo],
+    ['構造', item.structureInfo],
+    ['建築面積', `${item.buildingArea.toLocaleString()}㎡`],
+    ['延床面積', `${item.floorArea.toLocaleString()}㎡`],
+    ['階数', `${item.floorNum}階`],
+    ['募集概要', item.recruitment],
+    ['募集条件', item.conditions],
+  ]
+    .filter(([, value]) => value)
+    .map(([name, value]) => ({ '@type': 'PropertyValue', name, value }))
+
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'WebPage',
+        '@id': `${pageUrl}#webpage`,
+        url: pageUrl,
+        name: detailTitle.value,
+        description: detailDescription.value,
+        inLanguage: locale.value,
+        dateModified: item.updatedAt,
+        breadcrumb: { '@id': `${pageUrl}#breadcrumb` },
+        mainEntity: { '@id': `${pageUrl}#facility` },
+      },
+      {
+        '@type': ['CivicStructure', 'Place'],
+        '@id': `${pageUrl}#facility`,
+        name: item.schoolName,
+        description: detailDescription.value,
+        url: pageUrl,
+        keywords: detailKeywords.value,
+        address: {
+          '@type': 'PostalAddress',
+          streetAddress: item.address,
+          addressLocality: item.city,
+          addressRegion: item.prefecture,
+          addressCountry: 'JP',
+        },
+        ...(imageUrls.length ? { image: imageUrls } : {}),
+        additionalProperty,
+      },
+      {
+        '@type': 'BreadcrumbList',
+        '@id': `${pageUrl}#breadcrumb`,
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: t('nav.home'), item: homeUrl },
+          { '@type': 'ListItem', position: 2, name: t('nav.listings'), item: listingsUrl },
+          { '@type': 'ListItem', position: 3, name: item.schoolName, item: pageUrl },
+        ],
+      },
+    ],
+  }
+})
+
+usePublicSeo({
+  title: detailTitle,
+  description: detailDescription,
+  keywords: detailKeywords,
+  path: detailPath,
+  structuredData,
+})
 </script>
 
 <template>

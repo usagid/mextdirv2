@@ -3,7 +3,12 @@ const { t } = useI18n()
 const localePath = useLocalePath()
 const { track } = useUmami()
 
-useHead(() => ({ title: `mextdir — ${t('nav.about')}` }))
+usePublicSeo({
+  title: () => t('seo.aboutTitle'),
+  description: () => t('seo.aboutDescription'),
+  keywords: () => t('seo.keywords'),
+  path: '/about',
+})
 </script>
 
 <template>

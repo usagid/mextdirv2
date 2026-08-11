@@ -21,6 +21,7 @@ export default defineNuxtConfig({
 		storageDriver: process.env.STORAGE_DRIVER || "local",
 		public: {
 			appName: "mextdir",
+			siteUrl: process.env.PUBLIC_SITE_URL || "",
 			umamiUrl: process.env.UMAMI_URL || "",
 			umamiWebsiteId: process.env.UMAMI_WEBSITE_ID || "",
 		},
@@ -52,18 +53,18 @@ export default defineNuxtConfig({
 
 	app: {
 		head: {
-			title: "mextdir — Abandoned school listings",
+			title: "みんなの廃校｜廃校活用・未利用の学校施設を探す ｜ mextdir",
 			link: [{ rel: "icon", type: "image/svg+xml", href: "/favicon.svg" }],
 			meta: [
 				{
 					name: "description",
 					content:
-						"日本全国の廃校・未利用の学校施設を検索できる情報ディレクトリ。地域、面積、構造などの条件から、活用を検討できる学校施設を探せます。",
+						"文部科学省（MEXT）の「みんなの廃校」掲載情報をもとに、全国の廃校・未利用の学校施設を地域や条件から探せる情報ディレクトリです。廃校活用、学校跡地、地域活性化の検討に役立つ情報を提供します。",
 				},
 				{
 					name: "keywords",
 					content:
-						"みんなの廃校, 廃校, 廃校活用, 廃校利用, 未利用校舎, 学校施設, 学校跡地, 地域活性化, 公共施設活用, abandoned schools, vacant schools, unused school buildings, school reuse, school facilities, community revitalization, Japan",
+						"みんなの廃校, 廃校, 廃校活用, 廃校利用, 廃校情報, 廃校一覧, 廃校物件, 未利用校舎, 未利用施設, 学校施設, 学校跡地, 地域活性化, 公共施設活用, 文部科学省, MEXT, abandoned schools, vacant schools, unused school buildings, school reuse, school facilities, community revitalization, Japan",
 				},
 				{ name: "theme-color", content: "#f5f1e8" },
 			],

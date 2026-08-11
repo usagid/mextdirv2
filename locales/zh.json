@@ -2,6 +2,20 @@
   "site": {
     "tagline": "再次使用。"
   },
+  "seo": {
+    "siteName": "mextdir｜日本废校与闲置学校设施信息",
+    "siteDescription": "根据文部科学省（MEXT）「みんなの廃校」相关列表，按地区和条件查找日本各地的废校与闲置学校设施，了解再利用和社区活化信息。",
+    "keywords": "みんなの廃校, 日本废校, 废校再利用, 闲置学校设施, 学校旧址, 社区活化, MEXT",
+    "homeTitle": "日本废校与闲置学校设施｜mextdir",
+    "homeDescription": "按都道府县、市区町村或关键词查找日本各地的废校与闲置学校设施。",
+    "listingsTitle": "查找日本废校与闲置学校设施｜mextdir",
+    "listingsDescription": "按地区、设施类型、结构、面积和楼层数浏览日本的废校与闲置学校设施。",
+    "aboutTitle": "关于みんなの廃校与 mextdir",
+    "aboutDescription": "mextdir整理与「みんなの廃校」相关的学校设施信息，帮助探索废校的下一种用途。",
+    "detailTitle": "{schoolName}（{location}）｜学校设施信息 | mextdir",
+    "detailDescription": "{location}{schoolName}的学校设施信息，包括设施类型、结构、面积、楼层和再利用募集概要。",
+    "notFoundTitle": "找不到学校设施 | mextdir"
+  },
   "nav": {
     "home": "首页",
     "listings": "寻找学校",

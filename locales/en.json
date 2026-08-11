@@ -2,6 +2,20 @@
   "site": {
     "tagline": "Use it again."
   },
+  "seo": {
+    "siteName": "mextdir ｜ Japanese abandoned school listings",
+    "siteDescription": "Search abandoned and unused school facilities across Japan using information published through MEXT's みんなの廃校 listings. Explore reuse, community revitalization, and vacant school sites.",
+    "keywords": "みんなの廃校, abandoned schools, unused school buildings, school reuse, vacant school sites, school facilities, community revitalization, Japan, MEXT",
+    "homeTitle": "Japanese abandoned schools and unused school facilities ｜ mextdir",
+    "homeDescription": "Search abandoned and unused school facilities across Japan by prefecture, city, or keyword. Find listings for school reuse and new community spaces.",
+    "listingsTitle": "Find abandoned and unused school facilities in Japan ｜ mextdir",
+    "listingsDescription": "Browse Japanese abandoned and unused school facilities by prefecture, city, facility type, structure, area, and floor count.",
+    "aboutTitle": "About みんなの廃校 and mextdir",
+    "aboutDescription": "mextdir is an information directory built around MEXT's みんなの廃校 listings, helping people explore abandoned and unused school facilities for their next use.",
+    "detailTitle": "{schoolName} ({location}) ｜ Japanese school facility listing ｜ mextdir",
+    "detailDescription": "Information about {schoolName} in {location}: facility type, structure, area, floors, and reuse listing details.",
+    "notFoundTitle": "School facility not found ｜ mextdir"
+  },
   "nav": {
     "home": "Home",
     "listings": "Find schools",
