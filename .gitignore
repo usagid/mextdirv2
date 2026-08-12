@@ -10,3 +10,5 @@ public/uploads/*
 !public/uploads/*.svg
 prisma/dev.db
 .pnpm-store
+# Sentry Config File
+.env.sentry-build-plugin

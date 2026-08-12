@@ -7,7 +7,12 @@ export default defineNuxtConfig({
 
 	devtools: { enabled: true },
 
-	modules: ["@nuxtjs/tailwindcss", "@nuxt/image", "@nuxtjs/i18n"],
+	modules: [
+		"@nuxtjs/tailwindcss",
+		"@nuxt/image",
+		"@nuxtjs/i18n",
+		"@sentry/nuxt/module",
+	],
 
 	css: ["~/assets/css/main.css"],
 
@@ -24,6 +29,9 @@ export default defineNuxtConfig({
 			siteUrl: process.env.PUBLIC_SITE_URL || "",
 			umamiUrl: process.env.UMAMI_URL || "",
 			umamiWebsiteId: process.env.UMAMI_WEBSITE_ID || "",
+			sentry: {
+				dsn: process.env.NUXT_PUBLIC_SENTRY_DSN || process.env.SENTRY_DSN || "",
+			},
 		},
 	},
 
@@ -73,5 +81,14 @@ export default defineNuxtConfig({
 
 	nitro: {
 		compressPublicAssets: true,
+	},
+
+	sentry: {
+		org: "usagid",
+		project: "javascript-nuxt",
+	},
+
+	sourcemap: {
+		client: "hidden",
 	},
 });
